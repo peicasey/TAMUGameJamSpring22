@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
 public class AssignmentController : MonoBehaviour
 {
 
@@ -21,6 +24,10 @@ public class AssignmentController : MonoBehaviour
     new private Collider2D collider;
     private Rigidbody2D rb;
 
+    // A list of all the possible sprites we can use for the assignment
+    // Randomly pick one when the assignment is put into the world
+    [SerializeField]
+    private List<Sprite> sprites;
 
 
     // Start is called before the first frame update
@@ -29,7 +36,16 @@ public class AssignmentController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         playerVisual = transform.GetChild(0);
+        spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         facingRight = true;
+
+
+        // PROTIP:
+        // This is UnityEngine.Random, not System.Random
+        // Keep that in mind when you look stuff up for it
+
+        int index = (int)(Random.value * sprites.Count);
+        spriteRenderer.sprite = sprites[index];
     }
 
     // Update is called once per frame
@@ -39,9 +55,6 @@ public class AssignmentController : MonoBehaviour
         movement = Input.GetAxis("Horizontal") * speed;
 
         #region animation
-
-        if ((movement < 0 && facingRight) || (movement > 0 && !facingRight))
-            transform.Rotate(0f, 180f, 0f);
 
         // Updating facingRight
         if (movement > 0)
