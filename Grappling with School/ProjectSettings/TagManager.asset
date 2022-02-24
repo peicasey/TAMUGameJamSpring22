@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - Platform
+  - Assignment
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Platform
-  - 
+  - Assigment
   - 
   - 
   - 

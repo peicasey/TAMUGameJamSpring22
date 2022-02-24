@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
     // When we do a box cast to determine if we are next to a wall, how far we shave off the top so we don't mistake the moving platform we are standing on for a wall
     // Make this number bigger if there are fast moving vertical platforms in the level
+    // EDIT: this isn't Time Leap, there are no moving platforms here, but if it works, why change it?
     public float verticalMargin;
 
 
