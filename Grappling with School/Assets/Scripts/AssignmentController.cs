@@ -29,6 +29,14 @@ public class AssignmentController : MonoBehaviour
     [SerializeField]
     private List<Sprite> sprites;
 
+    [SerializeField]
+    LayerMask platformLayerMask;
+
+    // TEMPORARY - these 2 variables are not intended for final product
+    private SpriteRenderer leftBox;
+    private SpriteRenderer rightBox;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +46,11 @@ public class AssignmentController : MonoBehaviour
         playerVisual = transform.GetChild(0);
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         facingRight = true;
+
+
+        // TEMPORARY
+        leftBox = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        rightBox = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
 
         // PROTIP:
@@ -64,6 +77,44 @@ public class AssignmentController : MonoBehaviour
 
         #endregion
 
+
+        // FOR TESTING PURPOSES
+        // Not intended for final product
+
+        // For now, there are 2 boxes on either side of the assignment representing the area it is checking
+        // This code will change the color of those boxes to show us what it detects
+
+        if (IsGrounded()) {
+            if (NextToLeftWall()) {
+                leftBox.color = new Color(1, 0, 0, 0.4f);
+            }
+            else {
+                if (IsGroundedLeft()) {
+                    leftBox.color = new Color(0, 1, 0, 0.4f);
+                }
+                else {
+                    leftBox.color = new Color(1, 1, 0, 0.4f);
+                }
+            }
+
+
+            if (NextToRightWall()) {
+                rightBox.color = new Color(1, 0, 0, 0.4f);
+            }
+            else {
+                if (IsGroundedRight()) {
+                    rightBox.color = new Color(0, 1, 0, 0.4f);
+                }
+                else {
+                    rightBox.color = new Color(1, 1, 0, 0.4f);
+                }
+            }
+        }
+        else
+        {
+            leftBox.color = new Color(0, 0, 0, 0.4f);
+            rightBox.color = new Color(0, 0, 0, 0.4f);
+        }
     }
 
     // Physics calculations
@@ -71,4 +122,62 @@ public class AssignmentController : MonoBehaviour
     {
         rb.velocity = new Vector2(movement, rb.velocity.y);
     }
+
+
+    #region wall checks
+    // true if the assignment is standing on the ground
+    private bool IsGrounded()
+    {
+        float margin = 0.05f;
+        Vector2 point = collider.bounds.center;
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+
+        return grounded;
+    }
+
+    // true if there is a wall on the assignment's left
+    private bool NextToLeftWall()
+    {
+        float margin = 0.05f;
+        Vector2 point = collider.bounds.center;
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.left, margin, platformLayerMask);
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+
+        return wall;
+    }
+
+    // true if there is a wall on the assignment's right
+    private bool NextToRightWall()
+    {
+        float margin = 0.05f;
+        Vector2 point = collider.bounds.center;
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.right, margin, platformLayerMask);
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+
+        return wall;
+    }
+
+    // true if there is ground to the assignment's left
+    private bool IsGroundedLeft()
+    {
+        float margin = 0.05f;
+        Vector2 point = collider.bounds.center - new Vector3(collider.bounds.size.x, 0, 0);
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+
+        return grounded;
+    }
+
+    // true if there is ground to the assignment's right
+    private bool IsGroundedRight()
+    {
+        float margin = 0.05f;
+        Vector2 point = collider.bounds.center + new Vector3(collider.bounds.size.x, 0, 0);
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+
+        return grounded;
+    }
+    #endregion
 }
