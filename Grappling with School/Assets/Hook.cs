@@ -9,10 +9,23 @@ public class Hook : MonoBehaviour
     [SerializeField] private float force;
     [SerializeField] private bool isHook1;
     [SerializeField] private bool beingShot;
+    private FixedJoint2D fj;
+    private TargetJoint2D tj;
+    public float djDist = (float)0.2;
+    GameObject p1;
+
+    private bool pulling;
+    private GameObject targetObj;
 
     private void Start()
     {
+        p1 = GameObject.FindGameObjectWithTag("Player");
         rbHook = GetComponent<Rigidbody2D>();
+        fj = this.gameObject.AddComponent<FixedJoint2D>();
+        fj.enabled = false;
+
+        tj = this.gameObject.AddComponent<TargetJoint2D>();
+        tj.enabled = false;
     }
 
     public void Setup(Vector3 shootDir, bool isArm1)
@@ -26,19 +39,25 @@ public class Hook : MonoBehaviour
 
     public void Retract()
     {
-        DisconnectRope();
+        if (fj.enabled)
+        {
+            Drop(targetObj);
+        }
+        else
+        {
+            DisconnectRope();
+        }
         Destroy(this.gameObject);
         beingShot = false;
     }
     public void ConnectRope()
     {
-        GameObject p1 = GameObject.FindGameObjectWithTag("Player");
+        
         p1.GetComponent<Grapple>().startGrapple(isHook1, this.gameObject);
     }
 
     public void DisconnectRope()
     {
-        GameObject p1 = GameObject.FindGameObjectWithTag("Player");
         p1.GetComponent<Grapple>().endGrapple(isHook1, this.gameObject);
     }
 
@@ -70,16 +89,51 @@ public class Hook : MonoBehaviour
         {
             rbHook.velocity = shootDir * force;
         }
+
+        if (pulling)
+        {
+            tj.target = p1.GetComponent<Transform>().position;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Platform"))
         {
             ConnectRope();
             shootDir = Vector3.zero;
             rbHook.bodyType = RigidbodyType2D.Static;
             beingShot = false;
-        } 
+        }  else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment"))
+        {
+            targetObj = collision.gameObject;
+            rbHook.velocity = Vector2.zero;
+            ConnectHook(targetObj);
+            Pull(targetObj);
+        }
+    }
+
+    private void ConnectHook(GameObject obj)
+    {
+        fj.enabled = true;
+        fj.connectedBody = obj.GetComponent<Rigidbody2D>();
+    }
+
+    private void Pull(GameObject obj)
+    {
+        Debug.Log("Pull is being enabled");
+        pulling = true;
+
+        tj.enabled = true;
+        tj.target = p1.GetComponent<Transform>().position;
+        obj.GetComponent<AssignmentController>().Pulled();
+    }
+
+    private void Drop(GameObject obj)
+    {
+        pulling = false;
+        fj.connectedBody = null;
+        fj.enabled = false;
+        obj.GetComponent<AssignmentController>().Dropped();
     }
 }

@@ -24,7 +24,6 @@ public class Shoot : MonoBehaviour
         {
             Debug.Log("pewpew");
             ShootHook(sender, e);
-            Debug.Log(canShoot);
         } else
         {
             Debug.Log("Retracting hook");
@@ -37,7 +36,6 @@ public class Shoot : MonoBehaviour
         Vector3 shootDir = (e.aimPoint - e.firePoint.position).normalized;
         hookTransform = Instantiate(pfHook, e.firePoint.position, Quaternion.identity);
         hookTransform.GetComponent<Hook>().Setup(shootDir, e.isArm1);
-        Debug.Log("IS this code running?");
         canShoot = false;
     }
 
