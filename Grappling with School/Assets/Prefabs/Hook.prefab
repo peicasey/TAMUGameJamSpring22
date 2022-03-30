@@ -86,6 +86,8 @@ MonoBehaviour:
   force: 30
   isHook1: 0
   beingShot: 0
+  djDist: 0.2
+  sprite: {fileID: 8077394475717886348}
 --- !u!1 &8077394475717886346
 GameObject:
   m_ObjectHideFlags: 0

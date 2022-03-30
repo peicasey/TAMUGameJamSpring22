@@ -16,6 +16,9 @@ public class Hook : MonoBehaviour
 
     private bool pulling;
     private GameObject targetObj;
+    private bool hasHooked = false;
+    [SerializeField]
+    private SpriteRenderer sprite;
 
     private void Start()
     {
@@ -34,6 +37,7 @@ public class Hook : MonoBehaviour
         beingShot = true;
         this.shootDir = shootDir;
         this.isHook1 = isArm1;
+        sprite.color = isHook1 ? Color.blue : Color.red;
         //rbHook.velocity = shootDir * force;
     }
 
@@ -98,18 +102,24 @@ public class Hook : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+        if (canHook())
         {
-            ConnectRope();
-            shootDir = Vector3.zero;
-            rbHook.bodyType = RigidbodyType2D.Static;
-            beingShot = false;
-        }  else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment"))
-        {
-            targetObj = collision.gameObject;
-            rbHook.velocity = Vector2.zero;
-            ConnectHook(targetObj);
-            Pull(targetObj);
+            if (collision.gameObject.CompareTag("Platform"))
+            {
+                ConnectRope();
+                shootDir = Vector3.zero;
+                rbHook.bodyType = RigidbodyType2D.Static;
+                beingShot = false;
+                hasHooked = true;
+            }
+            else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment"))
+            {
+                targetObj = collision.gameObject;
+                rbHook.velocity = Vector2.zero;
+                ConnectHook(targetObj);
+                Pull(targetObj);
+                hasHooked = true;
+            }
         }
     }
 
@@ -135,5 +145,10 @@ public class Hook : MonoBehaviour
         fj.connectedBody = null;
         fj.enabled = false;
         obj.GetComponent<AssignmentController>().Dropped();
+    }
+
+    private bool canHook()
+    {
+        return !hasHooked;
     }
 }
