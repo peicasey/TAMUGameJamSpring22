@@ -50,7 +50,7 @@ public class AssignmentController : MonoBehaviour
     [SerializeField]
     LayerMask platformLayerMask;
 
-    
+    private bool beingPulled = false;
 
 
     // TEMPORARY - these 2 variables are not intended for final product
@@ -87,44 +87,53 @@ public class AssignmentController : MonoBehaviour
     // Input figuring out and animation
     void Update()
     {
-        // The two values can't both be positive, indicating that the assignment is both moving and standing still
-        if (sleepingTime > 0 && movingTime > 0)
-        {
-            sleepingTime = 0;
-        }
+            // The two values can't both be positive, indicating that the assignment is both moving and standing still
+            if (sleepingTime > 0 && movingTime > 0)
+            {
+                sleepingTime = 0;
+            }
 
-        // This way they don't hit the ground running when they fall
-        if (!CanMove())
-        {
-            sleepingTime = GetSleepingTime();
-            movingTime = 0;
-        }
-
-        // Stop moving before we walk off an edge
-        if (movingTime > 0)
-        {
+            // This way they don't hit the ground running when they fall
             if (!CanMove())
             {
-                movingTime = 0;
                 sleepingTime = GetSleepingTime();
+                movingTime = 0;
             }
-            // turn around if we get to an edge
-            else if (facingRight && !CanMoveRight() && CanMoveLeft())
-            {
-                facingRight = false;
-            }
-            else if (!facingRight && !CanMoveLeft() && CanMoveRight())
-            {
-                facingRight = true;
-            }
-        }
 
-        // Start moving!
-        if ((sleepingTime <= 0 && movingTime <= 0) && CanMove())
-        {
-            if (CanMoveLeft() && CanMoveRight())
+            // Stop moving before we walk off an edge
+            if (movingTime > 0)
             {
-                if (Random.value < 0.5)
+                if (!CanMove())
+                {
+                    movingTime = 0;
+                    sleepingTime = GetSleepingTime();
+                }
+                // turn around if we get to an edge
+                else if (facingRight && !CanMoveRight() && CanMoveLeft())
+                {
+                    facingRight = false;
+                }
+                else if (!facingRight && !CanMoveLeft() && CanMoveRight())
+                {
+                    facingRight = true;
+                }
+            }
+
+            // Start moving!
+            if ((sleepingTime <= 0 && movingTime <= 0) && CanMove())
+            {
+                if (CanMoveLeft() && CanMoveRight())
+                {
+                    if (Random.value < 0.5)
+                    {
+                        facingRight = false;
+                    }
+                    else
+                    {
+                        facingRight = true;
+                    }
+                }
+                else if (CanMoveLeft())
                 {
                     facingRight = false;
                 }
@@ -132,67 +141,67 @@ public class AssignmentController : MonoBehaviour
                 {
                     facingRight = true;
                 }
+
+                movingTime = GetMovingTime();
             }
-            else if (CanMoveLeft())
+
+
+            movement = GetMovement();
+
+            #region animation
+
+
+            #endregion
+
+
+            // FOR TESTING PURPOSES
+            // Not intended for final product
+            #region temporary
+
+            // For now, there are 2 boxes on either side of the assignment representing the area it is checking
+            // This code will change the color of those boxes to show us what it detects
+
+            if (IsGrounded())
             {
-                facingRight = false;
+                if (NextToLeftWall())
+                {
+                    leftBox.color = new Color(1, 0, 0, 0.4f);
+                }
+                else
+                {
+                    if (IsGroundedLeft())
+                    {
+                        leftBox.color = new Color(0, 1, 0, 0.4f);
+                    }
+                    else
+                    {
+                        leftBox.color = new Color(1, 1, 0, 0.4f);
+                    }
+                }
+
+
+                if (NextToRightWall())
+                {
+                    rightBox.color = new Color(1, 0, 0, 0.4f);
+                }
+                else
+                {
+                    if (IsGroundedRight())
+                    {
+                        rightBox.color = new Color(0, 1, 0, 0.4f);
+                    }
+                    else
+                    {
+                        rightBox.color = new Color(1, 1, 0, 0.4f);
+                    }
+                }
             }
             else
             {
-                facingRight = true;
+                leftBox.color = new Color(0, 0, 0, 0.4f);
+                rightBox.color = new Color(0, 0, 0, 0.4f);
             }
-
-            movingTime = GetMovingTime();
-        }
-
-
-        movement = GetMovement();
-
-        #region animation
-
-
-        #endregion
-
-
-        // FOR TESTING PURPOSES
-        // Not intended for final product
-        #region temporary
-
-        // For now, there are 2 boxes on either side of the assignment representing the area it is checking
-        // This code will change the color of those boxes to show us what it detects
-
-        if (IsGrounded()) {
-            if (NextToLeftWall()) {
-                leftBox.color = new Color(1, 0, 0, 0.4f);
-            }
-            else {
-                if (IsGroundedLeft()) {
-                    leftBox.color = new Color(0, 1, 0, 0.4f);
-                }
-                else {
-                    leftBox.color = new Color(1, 1, 0, 0.4f);
-                }
-            }
-
-
-            if (NextToRightWall()) {
-                rightBox.color = new Color(1, 0, 0, 0.4f);
-            }
-            else {
-                if (IsGroundedRight()) {
-                    rightBox.color = new Color(0, 1, 0, 0.4f);
-                }
-                else {
-                    rightBox.color = new Color(1, 1, 0, 0.4f);
-                }
-            }
-        }
-        else
-        {
-            leftBox.color = new Color(0, 0, 0, 0.4f);
-            rightBox.color = new Color(0, 0, 0, 0.4f);
-        }
-        #endregion
+            #endregion
 
     }
 
@@ -293,7 +302,8 @@ public class AssignmentController : MonoBehaviour
     // true if there is at least one possible movement option avaiable right now
     private bool CanMove()
     {
-        return CanMoveLeft() || CanMoveRight();
+
+        return (CanMoveLeft() || CanMoveRight()) && !beingPulled;
     }
     #endregion
 
@@ -329,4 +339,13 @@ public class AssignmentController : MonoBehaviour
         return minMovingTime + (maxMovingTime - minMovingTime) * Random.value;
     }
 
+    public void Pulled()
+    {
+        beingPulled = true;
+    }
+
+    public void Dropped()
+    {
+        beingPulled = false;
+    }
 }
