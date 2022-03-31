@@ -82,7 +82,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -261,7 +261,7 @@ TextureImporter:
         width: 128
         height: 303
       alignment: 9
-      pivot: {x: 0.159091, y: 0.9200422}
+      pivot: {x: 0.21590936, y: 0.9080412}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -282,7 +282,7 @@ TextureImporter:
         width: 146
         height: 306
       alignment: 9
-      pivot: {x: 0.62017447, y: 0.9286989}
+      pivot: {x: 0.564135, y: 0.9108737}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -303,7 +303,7 @@ TextureImporter:
         width: 54
         height: 136
       alignment: 9
-      pivot: {x: 0.29798043, y: 0.9144388}
+      pivot: {x: 0.34848645, y: 0.8542788}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -345,7 +345,7 @@ TextureImporter:
         width: 54
         height: 136
       alignment: 9
-      pivot: {x: 0.26431048, y: 0.9278075}
+      pivot: {x: 0.39899135, y: 0.8676473}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

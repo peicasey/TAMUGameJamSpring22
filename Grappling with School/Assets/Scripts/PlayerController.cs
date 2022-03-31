@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     public float groundMargin;
 
     // The player's animator
-    //public Animator animator;
+    public Animator animator;
 
     // The script to activate the timer
     //public ActivePowerupTimer powerUpTimer;
@@ -216,8 +216,9 @@ public class PlayerController : MonoBehaviour
 
 
         #region animation
-        /*
+        
         animator.SetFloat("Hrzntal_Speed", Mathf.Abs(movement));
+        /*
         animator.SetBool("IsJumping", jumped);
         animator.SetBool("InAir", !(NextToWall() || IsGrounded()));
         animator.SetBool("OnWall", NextToWall() && !IsGrounded());
