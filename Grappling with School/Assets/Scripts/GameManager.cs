@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject audioManager;
 
+    public GameObject GameOverScreen;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -38,5 +40,23 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
 
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over");
+        GameOverScreen.SetActive(true);
+    }
+
+    public void RetryLevel()
+    {
+        Debug.Log("TODO Implement Retry");
+        //TODO: Implement 
+    }
+
+    public void LoadEndScreen()
+    {
+        Debug.Log("TODO LoadEndScreen");
+        //TODO: Implement
     }
 }

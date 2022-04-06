@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.InputSystem;
+using TMPro;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -113,6 +114,16 @@ public class PlayerController : MonoBehaviour
     //private int checkpoint;
 
     //private bool movementOn = true;
+
+    public float maxHealth = 4;
+    private float health;
+    [SerializeField]
+    private int lives = 4;
+    public TextMeshPro healthIndicator;
+    public TextMeshProUGUI lifeIndicator;
+
+    public GameManager gm;
+
     #endregion
 
     // Start is called before the first frame update
@@ -128,6 +139,10 @@ public class PlayerController : MonoBehaviour
 
 
         //controller = gameObject.GetComponent<CharacterController>();
+
+        health = maxHealth;
+
+        gm = FindObjectOfType<GameManager>();
     }
 
     /*
@@ -162,6 +177,8 @@ public class PlayerController : MonoBehaviour
     // Input collection and animation
     void Update()
     {
+        healthUIUpdate();
+
         // If there is floor above and below you
         // Aka you are getting crushed
         if (WallAbove() && WallBelow() && WallAbove() != WallBelow())
@@ -244,6 +261,19 @@ public class PlayerController : MonoBehaviour
             }
         }
         }
+
+        //For testing purposes
+        ///**
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Damage();
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Heal();
+        }
+        //**/
     }
 
     // Physics calculations
@@ -366,12 +396,18 @@ public class PlayerController : MonoBehaviour
 
         if (dashed)
             dashed = false;
+
     }
 
     #region dying and respawning
     public void Die()
     {
-        Respawn();
+        if (lives > 0) { 
+            Respawn();
+        } else
+        {
+            GameOver();
+        }
     }
 
     public void Respawn()
@@ -384,6 +420,9 @@ public class PlayerController : MonoBehaviour
         timeAfterWallJump = 0;
         dashesLeft = 0;
         timeAfterDash = 0;
+        health = maxHealth;
+        lives--;
+
     }
     #endregion
 
@@ -535,4 +574,36 @@ public class PlayerController : MonoBehaviour
         return (!GetComponent<TimeBody>().isRewinding) && movementOn;
     }
     */
+
+    public void Damage(float num = 1)
+    {
+        health -= 1;
+        if(health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Heal(float num = 1)
+    {
+        if (health <= maxHealth - num)
+        {
+            health += num;
+        } else {
+            health = maxHealth;
+        }
+    }
+
+    private void healthUIUpdate()
+    {
+        healthIndicator.text = "GPA: " + health + ".0";
+        lifeIndicator.text= "Q drops: " + lives;
+    }
+
+    private void GameOver()
+    {
+        gm.GameOver();
+        Destroy(this.gameObject);
+    }
+
 }
