@@ -5,7 +5,7 @@ using UnityEngine;
 public class Chain : MonoBehaviour
 {
     public GameObject chainObject;
-    public float length;
+    private float length;
 
     public Rigidbody2D anchoredBody;
     public Rigidbody2D connectedBody;
@@ -31,11 +31,14 @@ public class Chain : MonoBehaviour
             Debug.LogError("Fix Chain Script Null reference");
         }
 
-        chainObjectHeight = currentChainLink.GetComponent<Collider2D>().bounds.size.x;
+        chainObjectHeight = currentChainLink.GetComponent<Collider2D>().bounds.size.y;
         chainObjectWidth = currentChainLink.GetComponent<Collider2D>().bounds.size.x;
+
+        length = Vector2.Distance(target1.GetComponent<Transform>().position, target2.GetComponent<Transform>().position);
 
         numOfChains = (int)(length / chainObjectHeight);
         Build();
+        ConnectBtwn();
     }
 
     public void Build()
@@ -63,8 +66,26 @@ public class Chain : MonoBehaviour
 
     }
 
-    public void ConnectBtwn(GameObject target1, GameObject target2)
+    public void ConnectBtwn()
     {
-        //target1.get
+        /**
+        FixedJoint2D fj1 = chainLinks[0].AddComponent<FixedJoint2D>();
+        FixedJoint2D fj2 = chainLinks[numOfChains - 1].AddComponent<FixedJoint2D>();
+
+        chainLinks[0].transform.position = target1.GetComponent<Transform>().position;
+        chainLinks[numOfChains-1].transform.position = target2.GetComponent<Transform>().position;
+
+        fj1.connectedBody = target1.GetComponent<Rigidbody2D>();
+        fj2.connectedBody = target2.GetComponent<Rigidbody2D>();
+        **/
+
+        FixedJoint2D fj1 = target1.AddComponent<FixedJoint2D>();
+        FixedJoint2D fj2 = target2.AddComponent<FixedJoint2D>();
+
+        chainLinks[0].transform.position = target1.GetComponent<Transform>().position;
+        chainLinks[numOfChains - 1].transform.position = target2.GetComponent<Transform>().position;
+
+        fj1.connectedBody = chainLinks[0].GetComponent<Rigidbody2D>();
+        fj2.connectedBody = chainLinks[numOfChains-1].GetComponent<Rigidbody2D>();
     }
 }
