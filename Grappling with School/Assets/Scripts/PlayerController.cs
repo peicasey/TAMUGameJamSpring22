@@ -124,6 +124,8 @@ public class PlayerController : MonoBehaviour
 
     public GameManager gm;
 
+    public bool canMove = true;
+
     #endregion
 
     // Start is called before the first frame update
@@ -141,6 +143,7 @@ public class PlayerController : MonoBehaviour
         //controller = gameObject.GetComponent<CharacterController>();
 
         health = maxHealth;
+        canMove = true;
 
         gm = FindObjectOfType<GameManager>();
     }
@@ -186,7 +189,7 @@ public class PlayerController : MonoBehaviour
             Die();
         }
 
-        if (/*checkMovementOn()*/true) { 
+        if (checkMovementOn()) { 
         #region input
 
         // if we are doing a special ability, we don't want to reset movement just yet
@@ -568,12 +571,12 @@ public class PlayerController : MonoBehaviour
         }
     }
     */
-    /*
+    
     public bool checkMovementOn()
     {
-        return (!GetComponent<TimeBody>().isRewinding) && movementOn;
+        //return !(NextToRightHitbox() || NextToLeftHitbox());
+        return canMove;
     }
-    */
 
     public void Damage(float num = 1)
     {
@@ -605,5 +608,6 @@ public class PlayerController : MonoBehaviour
         gm.GameOver();
         Destroy(this.gameObject);
     }
+
 
 }

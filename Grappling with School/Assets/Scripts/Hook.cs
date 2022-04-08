@@ -28,6 +28,7 @@ public class Hook : MonoBehaviour
         fj.enabled = false;
 
         tj = this.gameObject.AddComponent<TargetJoint2D>();
+        tj.frequency = 4;
         tj.enabled = false;
     }
 
@@ -51,8 +52,8 @@ public class Hook : MonoBehaviour
         {
             DisconnectRope();
         }
-        Destroy(this.gameObject);
         beingShot = false;
+        Destroy(this.gameObject);
     }
     public void ConnectRope()
     {
@@ -102,6 +103,7 @@ public class Hook : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (canHook())
         {
             if (collision.gameObject.CompareTag("Platform"))
@@ -122,8 +124,7 @@ public class Hook : MonoBehaviour
             }
         }
     }
-
-    private void ConnectHook(GameObject obj)
+        private void ConnectHook(GameObject obj)
     {
         fj.enabled = true;
         fj.connectedBody = obj.GetComponent<Rigidbody2D>();
@@ -136,7 +137,13 @@ public class Hook : MonoBehaviour
 
         tj.enabled = true;
         tj.target = p1.GetComponent<Transform>().position;
-        obj.GetComponent<AssignmentController>().Pulled();
+        try
+        {
+            obj.GetComponent<AssignmentController>().Pulled();
+        } catch
+        {
+
+        }
     }
 
     private void Drop(GameObject obj)
@@ -144,7 +151,14 @@ public class Hook : MonoBehaviour
         pulling = false;
         fj.connectedBody = null;
         fj.enabled = false;
-        obj.GetComponent<AssignmentController>().Dropped();
+        try
+        {
+            obj.GetComponent<AssignmentController>().Dropped();
+        } catch
+        {
+
+        }
+        
     }
 
     private bool canHook()
