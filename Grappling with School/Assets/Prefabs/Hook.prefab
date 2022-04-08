@@ -86,8 +86,10 @@ MonoBehaviour:
   force: 30
   isHook1: 0
   beingShot: 0
-  djDist: 0.2
+  dist: 0.2
   sprite: {fileID: 8077394475717886348}
+  ch: {fileID: 7370728931729556166, guid: 7d689639571b4ed48ab3fdade3a5af15, type: 3}
+  RetractToLength: 2
 --- !u!1 &8077394475717886346
 GameObject:
   m_ObjectHideFlags: 0
