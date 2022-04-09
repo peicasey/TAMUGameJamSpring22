@@ -609,5 +609,15 @@ public class PlayerController : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    public void DeleteThis(HingeJoint2D temp)
+    {
+        foreach (HingeJoint2D i in GetComponents<HingeJoint2D>())
+        {
+            if(i == temp)
+            {
+                Destroy(i);
+            }
+        }
+    }
 
 }

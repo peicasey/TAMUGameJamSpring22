@@ -45,11 +45,11 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 0.03141593
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -89,7 +89,8 @@ MonoBehaviour:
   dist: 0.2
   sprite: {fileID: 8077394475717886348}
   ch: {fileID: 7370728931729556166, guid: 7d689639571b4ed48ab3fdade3a5af15, type: 3}
-  RetractToLength: 2
+  RetractToLength: 1
+  maxTravelDistance: 0
 --- !u!1 &8077394475717886346
 GameObject:
   m_ObjectHideFlags: 0

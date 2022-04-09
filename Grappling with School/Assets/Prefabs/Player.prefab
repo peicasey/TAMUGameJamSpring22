@@ -628,7 +628,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2813747795222564890}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fedfd2e8a84b6bc4aa99ebe697655a95, type: 3}
   m_Name: 
@@ -647,7 +647,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1a20c9bed1b6d4bb3cc1f6a2c27007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canShoot: 0
   pfHook: {fileID: 8077394474798439306, guid: 0355ff5fed12a2040bdf91bf07fdeca7, type: 3}
+  firePoint: {fileID: 4950519059535761646}
+  isArm1: 0
 --- !u!1 &3259442130818963215
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,7 +919,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4758511807222084239}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fedfd2e8a84b6bc4aa99ebe697655a95, type: 3}
   m_Name: 
@@ -935,7 +938,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1a20c9bed1b6d4bb3cc1f6a2c27007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canShoot: 0
   pfHook: {fileID: 8077394474798439306, guid: 0355ff5fed12a2040bdf91bf07fdeca7, type: 3}
+  firePoint: {fileID: 3783307280346168348}
+  isArm1: 1
 --- !u!1 &5486438918829487457
 GameObject:
   m_ObjectHideFlags: 0

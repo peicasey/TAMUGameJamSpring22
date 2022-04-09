@@ -12,51 +12,121 @@ public class Shoot : MonoBehaviour
     [SerializeField] private Transform pfHook;
     private Transform hookTransform;
 
+    private GameObject myPlayer;
+    [SerializeField] private Transform firePoint;
+    private Vector3 aimPoint;
+    [SerializeField] private bool isArm1;
+    private bool isAiming = true;
 
-    // Start is called before the first frame update
+    private GameObject target;
+
     void Start()
     {
         canShoot = 0;
-        CharacterAiming characterAiming = GetComponent<CharacterAiming>();
-        characterAiming.OnShoot += CharacterAiming_OnShoot;
     }
 
-    private void CharacterAiming_OnShoot(object sender, CharacterAiming.OnShootEventArgs e)
+    private void Update()
+    {
+        if (isArm1)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                onShoot();
+            }
+        }
+        else
+        {
+            if (Input.GetButtonDown("Fire2"))
+            {
+                onShoot();
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isAiming)
+        {
+            aimPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            Vector3 difference = aimPoint - transform.position;
+            difference.Normalize();
+            float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+
+            transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+        }
+        else
+        {
+            Vector3 difference = target.transform.position - transform.position;
+            difference.Normalize();
+            float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+
+            transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
+        }
+    }
+
+    public bool getIsArm1()
+    {
+        return isArm1;
+    }
+
+    public Transform getFirePoint()
+    {
+        return firePoint;
+    }
+    public Vector3 getAimPoint()
+    {
+        return aimPoint;
+    }
+
+    public void Targeting(GameObject newTarget)
+    {
+        isAiming = false;
+        target = newTarget;
+    }
+
+    public void Aiming()
+    {
+        isAiming = true;
+    }
+
+
+    private void onShoot(/**object sender, CharacterAiming.OnShootEventArgs e**/)
     {
         Debug.Log("OnShoot: canshoot: " + canShoot);
         if (canShoot == 0)
         {
             Debug.Log("pewpew");
-            ShootHook(sender, e);
-        } else if(hookTransform == null)
+            ShootHook();
+        } else if(!hookTransform)
         {
-            canShoot = 0;
+            ShootHook();
         } else if (canShoot == 1)
         {
-            Retract(sender, e);
+            Retract();
         } else if(canShoot == 2)
         {
-            Delete(sender, e);
+            Delete();
         } else
         {
             //This shouldn't ever be called but just in case.
-            Delete(sender, e);
-            ShootHook(sender, e);
+            Delete();
+            ShootHook();
         }
     }
 
-    private void ShootHook(object sender, CharacterAiming.OnShootEventArgs e)
+    private void ShootHook()
     {
-        Vector3 shootDir = (e.aimPoint - e.firePoint.position).normalized;
-        hookTransform = Instantiate(pfHook, e.firePoint.position, Quaternion.identity);
-        hookTransform.GetComponent<Hook>().Setup(shootDir, e.isArm1);
+        Vector3 shootDir = (aimPoint - firePoint.position).normalized;
+        hookTransform = Instantiate(pfHook, firePoint.position, Quaternion.identity);
+        hookTransform.GetComponent<Hook>().Setup(this, shootDir, isArm1, firePoint);
+        Targeting(hookTransform.gameObject);
         canShoot = 1;
         Debug.Log("ShootHook: canshoot: " + canShoot);
     }
 
 
     
-    private void Retract(object sender, CharacterAiming.OnShootEventArgs e)
+    private void Retract()
     {
         Debug.Log("Retract: Retracting hook");
         hookTransform.GetComponent<Hook>().Retract();
@@ -64,12 +134,13 @@ public class Shoot : MonoBehaviour
         Debug.Log("Retract: canshoot: " + canShoot);
     }
 
-    private void Delete(object sender, CharacterAiming.OnShootEventArgs e)
+    private void Delete()
     {
         Debug.Log("Delete: DEleting hook");
         hookTransform.GetComponent<Hook>().Delete();
         canShoot = 0;
         Debug.Log("Retract: canshoot: " + canShoot);
+        Aiming();
     }
 
 }

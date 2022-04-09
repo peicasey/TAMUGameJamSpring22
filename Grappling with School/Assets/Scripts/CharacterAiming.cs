@@ -19,6 +19,8 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] private bool isArm1;
     private bool isAiming = true;
 
+    private Vector3 target;
+
     private void Update()
     {
         if (isArm1)
@@ -48,7 +50,11 @@ public class CharacterAiming : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
         } else
         {
+            Vector3 difference = target - transform.position;
+            difference.Normalize();
+            float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
 
+            transform.rotation = Quaternion.Euler(0f, 0f, rotationZ);
         }
     }
 
@@ -64,5 +70,16 @@ public class CharacterAiming : MonoBehaviour
     public Vector3 getAimPoint()
     {
         return aimPoint;
+    }
+
+    public void Targeting(Transform newTarget)
+    {
+        isAiming = false;
+        target = newTarget.position;
+    }
+
+    public void Aiming()
+    {
+        isAiming = true;
     }
 }

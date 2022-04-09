@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,8 @@ public class Chain : MonoBehaviour
 
     HingeJoint2D hj1;
     HingeJoint2D hj2;
+
+    public Transform anchor;
 
     ///**Testing val
     public float retractToLen;
@@ -93,7 +96,7 @@ public class Chain : MonoBehaviour
             currentHJ.anchor = chainLinks[i-1].GetComponent<ChainLink>().bottom.localPosition;
 
             //Trying to fix janky spawning bug
-            chainLinks[i].transform.position = target2.GetComponent<Transform>().position;
+            chainLinks[i].transform.position = chainLinks[i-1].GetComponent<Transform>().position;
 
             //Trying to fix launching across the map bug
             chainLinks[i].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -140,6 +143,8 @@ public class Chain : MonoBehaviour
         hj1.connectedBody = chainLinks[0].GetComponent<Rigidbody2D>();
         hj2.connectedBody = chainLinks[numOfChains-1].GetComponent<Rigidbody2D>();
 
+        //hj2.anchor = anchor.InverseTransformPoint(target2.transform.position);
+
         hj1.autoConfigureConnectedAnchor = false;
         hj1.connectedAnchor = chainLinks[0].GetComponent<ChainLink>().bottom.localPosition;
         hj2.autoConfigureConnectedAnchor = false;
@@ -164,7 +169,7 @@ public class Chain : MonoBehaviour
         for(int i = numOfChains-1; i > targetNumOfChains; i--) {
             Debug.Log(i);
             if (i <= 0)
-                Destroy(this.transform);
+                Delete();
             //Debug.Log("Retracting");
             Destroy(chainLinks[i]);
             chainLinks.RemoveAt(i);
@@ -173,4 +178,21 @@ public class Chain : MonoBehaviour
         numOfChains = chainLinks.Count;
         Debug.Log("Retracting complete");
     }
+
+    public void Delete()
+    {
+        Destroy(this.gameObject);
+    }
+
+    public HingeJoint2D getHJ(int i)
+    {
+        if(i == 1)
+        {
+            return hj1;
+        } else
+        {
+            return hj2;
+        }
+    }
+
 }

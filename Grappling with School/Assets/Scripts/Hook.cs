@@ -25,6 +25,9 @@ public class Hook : MonoBehaviour
 
     public float maxTravelDistance;
 
+    private Transform firePoint;
+    private Shoot st;
+
     private void Start()
     {
         p1 = GameObject.FindGameObjectWithTag("Player");
@@ -35,22 +38,32 @@ public class Hook : MonoBehaviour
 
         currentChain.GetComponent<Chain>().target1 = gameObject;
         currentChain.GetComponent<Chain>().target2 = p1;
+        currentChain.GetComponent<Chain>().anchor = firePoint;
         Debug.Log(currentChain.GetComponent<Chain>().target1 + "" + currentChain.GetComponent<Chain>().target2);
     }
 
     private void Update()
     {
-
+        
     }
 
-    public void Setup(Vector3 shootDir, bool isArm1)
+    void OnDrawGizmos()
     {
+        Debug.Log("Drawing Gizmos");
+        Gizmos.DrawSphere(firePoint.position, (float)0.1);
+    }
+    
+    public void Setup(Shoot shooter, Vector3 shootDir, bool isArm1, Transform firePt)
+    {
+        st = shooter;
         Debug.Log("The hook is being shot");
         beingShot = true;
         this.shootDir = shootDir;
         this.isHook1 = isArm1;
         sprite.color = isHook1 ? Color.blue : Color.red;
         //rbHook.velocity = shootDir * force;
+
+        firePoint = firePt;
     }
 
     public void Retract()
@@ -89,6 +102,7 @@ public class Hook : MonoBehaviour
     {
         Debug.Log("Disconnect: Retracting hook");
         p1.GetComponent<Grapple>().endGrapple(isHook1, this.gameObject);
+        st.Aiming();
     }
 
     /**
@@ -155,8 +169,6 @@ public class Hook : MonoBehaviour
     {
         Debug.Log("Pull is being enabled");
         pulling = true;
-
-
         currentChain.GetComponent<Chain>().Build();
         //currentChain.GetComponent<Chain>().RetractTo(RetractToLength);
         try
@@ -175,6 +187,7 @@ public class Hook : MonoBehaviour
         pulling = false;
         fj.connectedBody = null;
         fj.enabled = false;
+        p1.GetComponent<PlayerController>().DeleteThis(currentChain.GetComponent<Chain>().getHJ(2));
         currentChain.GetComponent<Chain>().RetractTo(0);
         Destroy(currentChain.gameObject);
         try
