@@ -69,6 +69,8 @@ public class AssignmentController : MonoBehaviour
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         facingRight = true;
 
+        // TODO: Tell GameManager that this assignment exists (to add to the count)
+
 
         // TEMPORARY
         leftBox = transform.GetChild(1).GetComponent<SpriteRenderer>();
@@ -87,53 +89,44 @@ public class AssignmentController : MonoBehaviour
     // Input figuring out and animation
     void Update()
     {
-            // The two values can't both be positive, indicating that the assignment is both moving and standing still
-            if (sleepingTime > 0 && movingTime > 0)
-            {
-                sleepingTime = 0;
-            }
+        // The two values can't both be positive, indicating that the assignment is both moving and standing still
+        if (sleepingTime > 0 && movingTime > 0)
+        {
+            sleepingTime = 0;
+        }
 
-            // This way they don't hit the ground running when they fall
+        // This way they don't hit the ground running when they fall
+        if (!CanMove())
+        {
+            sleepingTime = GetSleepingTime();
+            movingTime = 0;
+        }
+
+        // Stop moving before we walk off an edge
+        if (movingTime > 0)
+        {
             if (!CanMove())
             {
-                sleepingTime = GetSleepingTime();
                 movingTime = 0;
+                sleepingTime = GetSleepingTime();
             }
-
-            // Stop moving before we walk off an edge
-            if (movingTime > 0)
+            // turn around if we get to an edge
+            else if (facingRight && !CanMoveRight() && CanMoveLeft())
             {
-                if (!CanMove())
-                {
-                    movingTime = 0;
-                    sleepingTime = GetSleepingTime();
-                }
-                // turn around if we get to an edge
-                else if (facingRight && !CanMoveRight() && CanMoveLeft())
-                {
-                    facingRight = false;
-                }
-                else if (!facingRight && !CanMoveLeft() && CanMoveRight())
-                {
-                    facingRight = true;
-                }
+                facingRight = false;
             }
-
-            // Start moving!
-            if ((sleepingTime <= 0 && movingTime <= 0) && CanMove())
+            else if (!facingRight && !CanMoveLeft() && CanMoveRight())
             {
-                if (CanMoveLeft() && CanMoveRight())
-                {
-                    if (Random.value < 0.5)
-                    {
-                        facingRight = false;
-                    }
-                    else
-                    {
-                        facingRight = true;
-                    }
-                }
-                else if (CanMoveLeft())
+                facingRight = true;
+            }
+        }
+
+        // Start moving!
+        if ((sleepingTime <= 0 && movingTime <= 0) && CanMove())
+        {
+            if (CanMoveLeft() && CanMoveRight())
+            {
+                if (Random.value < 0.5)
                 {
                     facingRight = false;
                 }
@@ -141,67 +134,76 @@ public class AssignmentController : MonoBehaviour
                 {
                     facingRight = true;
                 }
-
-                movingTime = GetMovingTime();
             }
-
-
-            movement = GetMovement();
-
-            #region animation
-
-
-            #endregion
-
-
-            // FOR TESTING PURPOSES
-            // Not intended for final product
-            #region temporary
-
-            // For now, there are 2 boxes on either side of the assignment representing the area it is checking
-            // This code will change the color of those boxes to show us what it detects
-
-            if (IsGrounded())
+            else if (CanMoveLeft())
             {
-                if (NextToLeftWall())
-                {
-                    leftBox.color = new Color(1, 0, 0, 0.4f);
-                }
-                else
-                {
-                    if (IsGroundedLeft())
-                    {
-                        leftBox.color = new Color(0, 1, 0, 0.4f);
-                    }
-                    else
-                    {
-                        leftBox.color = new Color(1, 1, 0, 0.4f);
-                    }
-                }
-
-
-                if (NextToRightWall())
-                {
-                    rightBox.color = new Color(1, 0, 0, 0.4f);
-                }
-                else
-                {
-                    if (IsGroundedRight())
-                    {
-                        rightBox.color = new Color(0, 1, 0, 0.4f);
-                    }
-                    else
-                    {
-                        rightBox.color = new Color(1, 1, 0, 0.4f);
-                    }
-                }
+                facingRight = false;
             }
             else
             {
-                leftBox.color = new Color(0, 0, 0, 0.4f);
-                rightBox.color = new Color(0, 0, 0, 0.4f);
+                facingRight = true;
             }
-            #endregion
+
+            movingTime = GetMovingTime();
+        }
+
+
+        movement = GetMovement();
+
+        #region animation
+
+
+        #endregion
+
+
+        // FOR TESTING PURPOSES
+        // Not intended for final product
+        #region temporary
+
+        // For now, there are 2 boxes on either side of the assignment representing the area it is checking
+        // This code will change the color of those boxes to show us what it detects
+
+        if (IsGrounded())
+        {
+            if (NextToLeftWall())
+            {
+                leftBox.color = new Color(1, 0, 0, 0.4f);
+            }
+            else
+            {
+                if (IsGroundedLeft())
+                {
+                    leftBox.color = new Color(0, 1, 0, 0.4f);
+                }
+                else
+                {
+                    leftBox.color = new Color(1, 1, 0, 0.4f);
+                }
+            }
+
+
+            if (NextToRightWall())
+            {
+                rightBox.color = new Color(1, 0, 0, 0.4f);
+            }
+            else
+            {
+                if (IsGroundedRight())
+                {
+                    rightBox.color = new Color(0, 1, 0, 0.4f);
+                }
+                else
+                {
+                    rightBox.color = new Color(1, 1, 0, 0.4f);
+                }
+            }
+        }
+        else
+        {
+            leftBox.color = new Color(0, 0, 0, 0.4f);
+            rightBox.color = new Color(0, 0, 0, 0.4f);
+        }
+        #endregion
 
     }
 
@@ -347,5 +349,21 @@ public class AssignmentController : MonoBehaviour
     public void Dropped()
     {
         beingPulled = false;
+    }
+
+    private void Die()
+    {
+        // TODO: tell GameManager that assignment died
+        Destroy(this.gameObject);
+    }
+
+    //Detect when the assignment runs into something
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            Debug.Log("Assignment died");
+            Die();
+        }
     }
 }
