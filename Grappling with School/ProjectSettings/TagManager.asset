@@ -9,6 +9,7 @@ TagManager:
   - Arm
   - Wall
   - Movable
+  - Obstacle
   layers:
   - Default
   - TransparentFX

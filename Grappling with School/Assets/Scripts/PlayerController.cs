@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
 
     // The index of where you go when you respawn
     //private int checkpoint;
+    private Vector2 startPosition;
 
     //private bool movementOn = true;
 
@@ -143,6 +144,7 @@ public class PlayerController : MonoBehaviour
         health = maxHealth;
 
         gm = FindObjectOfType<GameManager>();
+        startPosition = transform.position;
     }
 
     /*
@@ -412,7 +414,7 @@ public class PlayerController : MonoBehaviour
 
     public void Respawn()
     {
-        transform.position = new Vector2(0, 0);//checkpoints.transform.GetChild(checkpoint).position;
+        transform.position = startPosition;//checkpoints.transform.GetChild(checkpoint).position;
 
         // reset everything
         rb.velocity = new Vector3(0, 0, 0);
@@ -537,6 +539,12 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("You died!");
             Die();
+        }
+
+        if (collision.CompareTag("Assignment"))
+        {
+            Debug.Log("Touched an assignment");
+            Damage();
         }
         /*
         else if (collision.CompareTag("Checkpoint"))
