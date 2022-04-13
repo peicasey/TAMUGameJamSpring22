@@ -29,9 +29,14 @@ public class Chain : MonoBehaviour
 
     public Transform anchor;
 
+    [SerializeField]
+    private float retractDelay;
+
     ///**Testing val
     public float retractToLen;
     //**/
+
+    Color chainColor;
 
 
     private void Start()
@@ -43,16 +48,19 @@ public class Chain : MonoBehaviour
     {
     }
 
-    public void Build()
+    public void Build(Color hookColor)
     {
+        chainColor = hookColor;
         //I have no idea why but it was spawning the list with 2 null gameObjects. I did this as a temp fix
         chainLinks.Clear();
         numOfChains = 0;
 
 
         currentChainLink = Instantiate<GameObject>(chainObject, this.transform);
+        currentChainLink.GetComponent<SpriteRenderer>().color = chainColor;
         chainLinks.Add(currentChainLink);
         chainLinks[0].name = "Chain 0";
+
         //Debug.Log(chainLinks);
         if (!(currentChainLink))
         {
@@ -79,6 +87,7 @@ public class Chain : MonoBehaviour
         {
             //Spawning and adding to list
             currentChainLink = Instantiate<GameObject>(chainObject, this.transform);
+            currentChainLink.GetComponent<SpriteRenderer>().color = chainColor;
             chainLinks.Add(currentChainLink);
             chainLinks[i].name = "Chain " + i;
             //Debug.Log(chainLinks);
@@ -134,49 +143,78 @@ public class Chain : MonoBehaviour
         fj2.autoConfigureConnectedAnchor = false;
         fj2.connectedAnchor = chainLinks[numOfChains - 1].GetComponent<ChainLink>().top.localPosition;
         **/
-        hj1 = target1.AddComponent<HingeJoint2D>();
+        hj1 = chainLinks[0].AddComponent<HingeJoint2D>();
         hj2 = target2.AddComponent<HingeJoint2D>();
 
         chainLinks[0].transform.position = target1.GetComponent<Transform>().position;
         chainLinks[numOfChains - 1].transform.position = target2.GetComponent<Transform>().position;
 
-        hj1.connectedBody = chainLinks[0].GetComponent<Rigidbody2D>();
+        hj1.connectedBody = target1.GetComponent<Rigidbody2D>();
         hj2.connectedBody = chainLinks[numOfChains-1].GetComponent<Rigidbody2D>();
 
         //hj2.anchor = anchor.InverseTransformPoint(target2.transform.position);
 
         hj1.autoConfigureConnectedAnchor = false;
-        hj1.connectedAnchor = chainLinks[0].GetComponent<ChainLink>().bottom.localPosition;
+        hj1.connectedAnchor = new Vector2(0,0);
+        hj1.anchor = chainLinks[0].GetComponent<ChainLink>().bottom.localPosition;
         hj2.autoConfigureConnectedAnchor = false;
         hj2.connectedAnchor = chainLinks[numOfChains - 1].GetComponent<ChainLink>().top.localPosition;
-
     }
 
-    public void Retract()
-    {
-        //Debug.Log("Retracting");
-        Destroy(chainLinks[numOfChains - 1]);
-        chainLinks.RemoveAt(numOfChains - 1);
-        numOfChains--;
-        hj2.connectedBody = chainLinks[numOfChains - 1].GetComponent<Rigidbody2D>();
-        //Debug.Log("Done waiting");
-    }
 
     public void RetractTo(float targetLength)
     {
         int targetNumOfChains = Mathf.CeilToInt(targetLength / chainObjectHeight);
         Debug.Log("Retracting to" + targetNumOfChains);
-        for(int i = numOfChains-1; i > targetNumOfChains; i--) {
+        StartCoroutine(RetractTo(targetNumOfChains));
+        numOfChains = chainLinks.Count;
+        Debug.Log("Retracting complete");
+    }
+
+    public void RetractFrom(float targetLength)
+    {
+        int targetNumOfChains = Mathf.CeilToInt(targetLength / chainObjectHeight);
+        Debug.Log("Retracting to" + targetNumOfChains);
+        StartCoroutine(RetractFrom(targetNumOfChains));
+        numOfChains = chainLinks.Count;
+        Debug.Log("Retracting complete");
+    }
+
+    IEnumerator RetractTo(int targetNum)
+    {
+        //Debug.Log("Retracting");
+        for (int i = numOfChains - 1; numOfChains > targetNum; i--)
+        {
             Debug.Log(i);
             if (i <= 0)
                 Delete();
-            //Debug.Log("Retracting");
             Destroy(chainLinks[i]);
             chainLinks.RemoveAt(i);
             hj2.connectedBody = chainLinks[i - 1].GetComponent<Rigidbody2D>();
+            numOfChains = chainLinks.Count;
+            yield return new WaitForSeconds(retractDelay);
         }
-        numOfChains = chainLinks.Count;
-        Debug.Log("Retracting complete");
+    }
+
+    IEnumerator RetractFrom(int targetNum)
+    {
+        //Debug.Log("Retracting")
+        while(numOfChains > targetNum)
+        {
+            Debug.Log(numOfChains);
+            if (numOfChains <= 1)
+                Delete();
+            Destroy(chainLinks[0]);
+            chainLinks.RemoveAt(0);
+            hj1 = chainLinks[0].AddComponent<HingeJoint2D>();
+            chainLinks[0].transform.position = target1.GetComponent<Transform>().position;
+            hj1.connectedBody = target1.GetComponent<Rigidbody2D>();
+            hj1.autoConfigureConnectedAnchor = false;
+            hj1.connectedAnchor = new Vector2(0, 0);
+            hj1.anchor = chainLinks[0].GetComponent<ChainLink>().bottom.localPosition;
+            numOfChains = chainLinks.Count;
+            yield return new WaitForSeconds(retractDelay);
+        }
     }
 
     public void Delete()

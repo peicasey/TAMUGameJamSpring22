@@ -10,6 +10,9 @@ TagManager:
   - Wall
   - Movable
   - Obstacle
+  - Bomb
+  - Hook
+  - Breakable
   layers:
   - Default
   - TransparentFX

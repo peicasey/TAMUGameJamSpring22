@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5060712820615383176}
   m_Layer: 0
   m_Name: Hook
-  m_TagString: Untagged
+  m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8077394474798439307}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3598046, y: -0.43936652, z: -9.18102}
+  m_LocalPosition: {x: 2.3598046, y: -0.43936652, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8077394475717886349}
@@ -89,8 +89,9 @@ MonoBehaviour:
   dist: 0.2
   sprite: {fileID: 8077394475717886348}
   ch: {fileID: 7370728931729556166, guid: 7d689639571b4ed48ab3fdade3a5af15, type: 3}
-  RetractToLength: 1
-  maxTravelDistance: 0
+  RetractToLength: 3
+  maxTravelDistance: 10
+  currentPos: {x: 0, y: 0, z: 0}
 --- !u!1 &8077394475717886346
 GameObject:
   m_ObjectHideFlags: 0

@@ -155,7 +155,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 12
   m_Sprite: {fileID: -2500434289153458191, guid: 45a000e1203c9f44a85ede0846abff31, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.4669811, b: 0.4669811, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -555,7 +555,7 @@ MonoBehaviour:
   extraJumps: 1
   coyoteTimeLength: 0.1
   horizontalJumpSpeed: 2
-  wallClimb: 1
+  wallClimb: 0
   wallJumpCooldown: 0.1
   wallSlideSpeed: 0
   dashTimeLength: 0.3
@@ -1315,7 +1315,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_Sprite: {fileID: 3309370557176000249, guid: 45a000e1203c9f44a85ede0846abff31, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.504717, g: 0.507188, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

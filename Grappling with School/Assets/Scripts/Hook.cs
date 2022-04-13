@@ -17,6 +17,7 @@ public class Hook : MonoBehaviour
     private bool hasHooked = false;
     [SerializeField]
     private SpriteRenderer sprite;
+    private Vector3 startPos;
 
     public GameObject ch;
     private GameObject currentChain;
@@ -24,6 +25,7 @@ public class Hook : MonoBehaviour
     public float RetractToLength;
 
     public float maxTravelDistance;
+    public Vector3 currentPos;
 
     private Transform firePoint;
     private Shoot st;
@@ -44,13 +46,23 @@ public class Hook : MonoBehaviour
 
     private void Update()
     {
-        
+        if (CheckMaxDist() && beingShot)
+        {
+            Debug.Log("Hook has exceeded max distance");
+            Delete();
+        }
     }
 
     void OnDrawGizmos()
     {
         Debug.Log("Drawing Gizmos");
         Gizmos.DrawSphere(firePoint.position, (float)0.1);
+    }
+
+    public bool CheckMaxDist()
+    {
+        currentPos = this.transform.position;
+        return (currentPos - startPos).magnitude > maxTravelDistance;
     }
     
     public void Setup(Shoot shooter, Vector3 shootDir, bool isArm1, Transform firePt)
@@ -64,6 +76,7 @@ public class Hook : MonoBehaviour
         //rbHook.velocity = shootDir * force;
 
         firePoint = firePt;
+        startPos = firePoint.position;
     }
 
     public void Retract()
@@ -128,6 +141,7 @@ public class Hook : MonoBehaviour
 
     private void FixedUpdate()
     {
+        currentPos = this.transform.position;
         if (beingShot)
         {
             rbHook.velocity = shootDir * force;
@@ -137,23 +151,30 @@ public class Hook : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (canHook())
+        if (canHook() && !CheckMaxDist())
         {
             if (collision.gameObject.CompareTag("Platform"))
             {
-                ConnectRope();
+                //ConnectRope();
                 shootDir = Vector3.zero;
+                rbHook.velocity = Vector3.zero;
                 rbHook.bodyType = RigidbodyType2D.Static;
+                //ConnectHook(targetObj);
+                PullPlayer();
                 beingShot = false;
                 hasHooked = true;
+
             }
-            else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment"))
+            else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment") || collision.gameObject.CompareTag("Bomb"))
             {
+                if (collision.gameObject.CompareTag("Bomb"))
+                    collision.gameObject.GetComponent<Bomb>().startBlowingUp();
                 targetObj = collision.gameObject;
                 shootDir = Vector3.zero;
                 rbHook.velocity = Vector3.zero;
                 ConnectHook(targetObj);
                 Pull(targetObj);
+                beingShot = false;
                 hasHooked = true;
             }
         }
@@ -165,12 +186,20 @@ public class Hook : MonoBehaviour
         fj.connectedBody = obj.GetComponent<Rigidbody2D>();
     }
 
+    private void PullPlayer()
+    {
+        Debug.Log("Pulling Player is being enabled");
+        pulling = true;
+        currentChain.GetComponent<Chain>().Build(sprite.color);
+        currentChain.GetComponent<Chain>().RetractTo(RetractToLength);
+    }
+
     private void Pull(GameObject obj)
     {
         Debug.Log("Pull is being enabled");
         pulling = true;
-        currentChain.GetComponent<Chain>().Build();
-        //currentChain.GetComponent<Chain>().RetractTo(RetractToLength);
+        currentChain.GetComponent<Chain>().Build(sprite.color);
+        currentChain.GetComponent<Chain>().RetractFrom(RetractToLength);
         try
         {
             obj.GetComponent<AssignmentController>().Pulled();
@@ -180,6 +209,7 @@ public class Hook : MonoBehaviour
 
         }
     }
+    
 
     private void Drop(GameObject obj)
     {

@@ -588,7 +588,7 @@ public class PlayerController : MonoBehaviour
 
     public void Damage(float num = 1)
     {
-        health -= 1;
+        health -= num;
         if(health <= 0)
         {
             Die();

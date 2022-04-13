@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chainObject: {fileID: 5247914000120922017, guid: abbd49e058314034c9e4a943c86df93b, type: 3}
-  anchoredBody: {fileID: 0}
-  connectedBody: {fileID: 0}
+  length: 0
   target1: {fileID: 0}
   target2: {fileID: 0}
   chainLinks: []
-  retractToLen: 1
+  numOfChains: 0
+  anchor: {fileID: 0}
+  retractDelay: 0.2
+  retractToLen: 0

@@ -19,4 +19,18 @@ public class ChainLink : MonoBehaviour
         width = cd.bounds.size.y;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            cd.isTrigger = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Debug.Log("Exiting");
+        cd.isTrigger = false;
+    }
+
 }
