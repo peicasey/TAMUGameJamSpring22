@@ -143,6 +143,7 @@ MonoBehaviour:
   - Breakable
   triggers:
   - Player
+  audioPlayer: {fileID: 0}
 --- !u!95 &6023348083014598067
 Animator:
   serializedVersion: 3
