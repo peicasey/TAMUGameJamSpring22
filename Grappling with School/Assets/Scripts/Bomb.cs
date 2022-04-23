@@ -44,6 +44,7 @@ public class Bomb : MonoBehaviour
 
     public void startBlowingUp()
     {
+        audioPlayer.Play();
         StartCoroutine(BlowUp());
     }
 
