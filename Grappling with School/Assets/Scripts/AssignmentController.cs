@@ -50,6 +50,9 @@ public class AssignmentController : MonoBehaviour
     [SerializeField]
     LayerMask platformLayerMask;
 
+    public Animator mainAnimator;
+    public Animator attackAnimator;
+
     private bool beingPulled = false;
 
     
@@ -145,7 +148,7 @@ public class AssignmentController : MonoBehaviour
         movement = GetMovement();
 
         #region animation
-
+        mainAnimator.SetFloat("hrzntalSpeed", Mathf.Abs(movement));
 
         #endregion
 
