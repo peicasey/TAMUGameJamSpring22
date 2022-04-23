@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject GameOverScreen;
 
+    private int assignments;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -58,5 +60,20 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("TODO LoadEndScreen");
         //TODO: Implement
+    }
+
+
+    public void AddAssignment()
+    {
+        assignments++;
+    }
+
+    public void RemoveAssignment()
+    {
+        assignments--;
+        if (assignments == 0)
+        {
+            LoadEndScreen();
+        }
     }
 }

@@ -52,6 +52,8 @@ public class AssignmentController : MonoBehaviour
 
     private bool beingPulled = false;
 
+    public GameManager gm;
+
     
 
     #endregion
@@ -66,8 +68,10 @@ public class AssignmentController : MonoBehaviour
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         facingRight = true;
         audioPlayer = GameObject.Find("Paper death sound").GetComponent<AudioSource>();
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        // TODO: Tell GameManager that this assignment exists (to add to the count)
+        // Tell GameManager that this assignment exists (to add to the count)
+        gm.AddAssignment();
 
 
 
@@ -298,7 +302,8 @@ public class AssignmentController : MonoBehaviour
 
     public void Die()
     {
-        // TODO: tell GameManager that assignment died
+        // tell GameManager that assignment died
+        gm.RemoveAssignment();
         audioPlayer.Play();
         Destroy(this.gameObject);
     }
