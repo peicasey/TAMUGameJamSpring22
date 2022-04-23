@@ -15,12 +15,15 @@ public class Bomb : MonoBehaviour
     public List<string> destroyable = new List<string> { "Player", "Assignment", "Breakable", "Hook" };
     public List<string> triggers = new List<string> { "Player", "Hook" };
 
+    public AudioSource audioPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
         isBlowingUp = false;
         sp = GetComponent<SpriteRenderer>();
         cd = GetComponent<CircleCollider2D>();
+        
     }
 
     // Update is called once per frame
@@ -41,6 +44,7 @@ public class Bomb : MonoBehaviour
 
     public void startBlowingUp()
     {
+        audioPlayer.Play();
         StartCoroutine(BlowUp());
     }
 
@@ -49,6 +53,8 @@ public class Bomb : MonoBehaviour
         isBlowingUp = true;
         sp.color = Color.red;
         yield return new WaitForSeconds(bombDelay);
+        audioPlayer = GameObject.Find("Bomb explode").GetComponent<AudioSource>();
+        audioPlayer.Play();
         checkRadius();
         //yield return new WaitForSeconds(0.1f);
         Destroy(this.gameObject);
@@ -66,6 +72,11 @@ public class Bomb : MonoBehaviour
             } else if (hitCollider.gameObject.CompareTag("Hook"))
             {
                 hitCollider.gameObject.GetComponent<Hook>().Delete();
+            }
+            else if (hitCollider.gameObject.CompareTag("Assignment"))
+            {
+                if(hitCollider.gameObject.GetComponent<AssignmentController>())
+                    hitCollider.gameObject.GetComponent<AssignmentController>().Die();
             }
             else if (destroyable.Contains(hitCollider.gameObject.tag))
             {

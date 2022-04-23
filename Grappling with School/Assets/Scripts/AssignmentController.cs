@@ -50,7 +50,12 @@ public class AssignmentController : MonoBehaviour
     [SerializeField]
     LayerMask platformLayerMask;
 
+    public Animator mainAnimator;
+    public Animator attackAnimator;
+
     private bool beingPulled = false;
+
+    public GameManager gm;
 
     
 
@@ -66,8 +71,10 @@ public class AssignmentController : MonoBehaviour
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         facingRight = true;
         audioPlayer = GameObject.Find("Paper death sound").GetComponent<AudioSource>();
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        // TODO: Tell GameManager that this assignment exists (to add to the count)
+        // Tell GameManager that this assignment exists (to add to the count)
+        gm.AddAssignment();
 
 
 
@@ -145,7 +152,7 @@ public class AssignmentController : MonoBehaviour
         movement = GetMovement();
 
         #region animation
-
+        mainAnimator.SetFloat("hrzntalSpeed", Mathf.Abs(movement));
 
         #endregion
 
@@ -296,9 +303,10 @@ public class AssignmentController : MonoBehaviour
         beingPulled = false;
     }
 
-    private void Die()
+    public void Die()
     {
-        // TODO: tell GameManager that assignment died
+        // tell GameManager that assignment died
+        gm.RemoveAssignment();
         audioPlayer.Play();
         Destroy(this.gameObject);
     }

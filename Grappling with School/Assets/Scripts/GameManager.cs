@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject GameOverScreen;
 
+    private int assignments;
 
     // Start is called before the first frame update
     void Awake()
@@ -64,5 +65,20 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Go to level select screen -- doesn't exist yet");
         // SceneManager.LoadScene("LevelSelectScreen");
+    }
+
+
+    public void AddAssignment()
+    {
+        assignments++;
+    }
+
+    public void RemoveAssignment()
+    {
+        assignments--;
+        if (assignments == 0)
+        {
+            LoadEndScreen();
+        }
     }
 }
