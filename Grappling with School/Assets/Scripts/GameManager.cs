@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     private int assignments;
 
+    public MoveToNextLevel moveToNextLevel;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        moveToNextLevel = FindObjectOfType<MoveToNextLevel>();
     }
 
     // Update is called once per frame
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
     public void GiveUp()
     {
         Debug.Log("Go to level select screen -- doesn't exist yet");
-        // SceneManager.LoadScene("LevelSelectScreen");
+        SceneManager.LoadScene(0);
     }
 
 
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
         assignments--;
         if (assignments == 0)
         {
-            LoadEndScreen();
+            moveToNextLevel.OpenDoor();
         }
     }
 }

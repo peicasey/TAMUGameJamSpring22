@@ -14,6 +14,7 @@ TagManager:
   - Hook
   - Breakable
   - GameManager
+  - Door
   layers:
   - Default
   - TransparentFX
