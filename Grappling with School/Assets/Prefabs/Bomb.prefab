@@ -137,7 +137,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombDelay: 2.96
+  animationDelay: 1.2
   bombRange: 3
+  animator: {fileID: 6023348083014598067}
   destroyable:
   - Player
   - Assignment
