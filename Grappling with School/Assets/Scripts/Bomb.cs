@@ -58,11 +58,12 @@ public class Bomb : MonoBehaviour
         yield return new WaitForSeconds(bombDelay);
         sp.color = Color.white;
         animator.SetTrigger("blowUp");
-        yield return new WaitForSeconds(animationDelay);
+        audioPlayer.Pause();
         audioPlayer = GameObject.Find("Bomb explode").GetComponent<AudioSource>();
         audioPlayer.Play();
+        yield return new WaitForSeconds(animationDelay/2);
         checkRadius();
-        //yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(animationDelay/2);
         Destroy(this.gameObject);
     }
 
