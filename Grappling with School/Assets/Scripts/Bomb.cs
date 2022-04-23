@@ -5,9 +5,12 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     public float bombDelay;
+    public float animationDelay;
+
     [SerializeField]
     float bombRange;
 
+    public Animator animator;
     bool isBlowingUp;
     SpriteRenderer sp;
     CircleCollider2D cd;
@@ -53,6 +56,9 @@ public class Bomb : MonoBehaviour
         isBlowingUp = true;
         sp.color = Color.red;
         yield return new WaitForSeconds(bombDelay);
+        sp.color = Color.white;
+        animator.SetTrigger("blowUp");
+        yield return new WaitForSeconds(animationDelay);
         audioPlayer = GameObject.Find("Bomb explode").GetComponent<AudioSource>();
         audioPlayer.Play();
         checkRadius();
