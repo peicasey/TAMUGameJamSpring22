@@ -136,7 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombDelay: 2.96
+  animationDelay: 1.2
   bombRange: 5
+  animator: {fileID: 6023348083014598067}
   destroyable:
   - Player
   - Assignment
@@ -153,7 +155,7 @@ Animator:
   m_GameObject: {fileID: 5002044008421459193}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7edef958cf92150439c13da8339ce373, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

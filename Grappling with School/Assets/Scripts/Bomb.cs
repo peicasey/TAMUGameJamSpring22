@@ -5,8 +5,12 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     public float bombDelay;
+    public float animationDelay;
+
     [SerializeField]
     float bombRange;
+
+    public Animator animator;
 
     bool isBlowingUp;
     SpriteRenderer sp;
@@ -49,6 +53,9 @@ public class Bomb : MonoBehaviour
         isBlowingUp = true;
         sp.color = Color.red;
         yield return new WaitForSeconds(bombDelay);
+        sp.color = Color.white;
+        animator.SetTrigger("blowUp");
+        yield return new WaitForSeconds(animationDelay);
         checkRadius();
         //yield return new WaitForSeconds(0.1f);
         Destroy(this.gameObject);
