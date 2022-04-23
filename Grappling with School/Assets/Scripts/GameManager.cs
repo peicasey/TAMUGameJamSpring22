@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject GameOverScreen;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -50,13 +50,19 @@ public class GameManager : MonoBehaviour
 
     public void RetryLevel()
     {
-        Debug.Log("TODO Implement Retry");
-        //TODO: Implement 
+        Scene scene = SceneManager.GetActiveScene(); 
+        SceneManager.LoadScene(scene.name);
     }
 
     public void LoadEndScreen()
     {
-        Debug.Log("TODO LoadEndScreen");
-        //TODO: Implement
+        Debug.Log("Go to level select screen -- doesn't exist yet");
+        // SceneManager.LoadScene("LevelSelectScreen");
+    }
+
+    public void GiveUp()
+    {
+        Debug.Log("Go to level select screen -- doesn't exist yet");
+        // SceneManager.LoadScene("LevelSelectScreen");
     }
 }

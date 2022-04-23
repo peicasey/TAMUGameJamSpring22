@@ -197,12 +197,12 @@ public class Chain : MonoBehaviour
 
     IEnumerator RetractTo(int targetNum)
     {
-       retracting = true;
+        target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        retracting = true;
         //Debug.Log("Retracting");
         for (int i = numOfChains - 1; numOfChains > targetNum; i--)
         {
             //Trying to fix janky teleporting
-            target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             Debug.Log(i);
             if (i <= 0)
                 Delete();
@@ -220,8 +220,9 @@ public class Chain : MonoBehaviour
 
     IEnumerator RetractFrom(int targetNum)
     {
+        target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         //Debug.Log("Retracting")
-        while(numOfChains > targetNum)
+        while (numOfChains > targetNum)
         {
             Debug.Log(numOfChains);
             if (numOfChains <= 1)
@@ -237,8 +238,6 @@ public class Chain : MonoBehaviour
             numOfChains = chainLinks.Count;
             yield return new WaitForSeconds(retractDelay);
         }
-        //Trying to fix janky teleporting
-        target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
     }
 
     public void ExtendTo(float targetLength)
