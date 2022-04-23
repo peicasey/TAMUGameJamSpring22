@@ -101,7 +101,12 @@ public class Hook : MonoBehaviour
             DisconnectRope();
         }
         beingShot = false;
-        currentChain.GetComponent<Chain>().Delete();
+
+        if (currentChain) { 
+            p1.GetComponent<PlayerController>().DeleteThis(currentChain.GetComponent<Chain>().getHJ(2));
+            currentChain.GetComponent<Chain>().Delete();
+        }
+
         p1.GetComponent<PlayerController>().RemoveHook(this.gameObject);
         Destroy(this.gameObject);
     }
@@ -159,7 +164,7 @@ public class Hook : MonoBehaviour
 
         if (canHook() && !CheckMaxDist())
         {
-            if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Breakable"))
+            if (collision.gameObject.CompareTag("Platform"))
             {
                 audioPlayer.Play();
 
@@ -235,7 +240,6 @@ public class Hook : MonoBehaviour
         pulling = false;
         fj.connectedBody = null;
         fj.enabled = false;
-        p1.GetComponent<PlayerController>().DeleteThis(currentChain.GetComponent<Chain>().getHJ(2));
         try
         {
             obj.GetComponent<AssignmentController>().Dropped();

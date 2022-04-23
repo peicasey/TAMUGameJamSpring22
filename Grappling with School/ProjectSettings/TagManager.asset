@@ -13,6 +13,7 @@ TagManager:
   - Bomb
   - Hook
   - Breakable
+  - GameManager
   layers:
   - Default
   - TransparentFX

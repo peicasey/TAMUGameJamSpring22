@@ -415,6 +415,11 @@ public class PlayerController : MonoBehaviour
         if (dashed)
             dashed = false;
 
+
+        if(this.transform.position.y < -100)
+        {
+            Damage(100);
+        }
     }
 
     #region dying and respawning
@@ -430,6 +435,10 @@ public class PlayerController : MonoBehaviour
 
     public void Respawn()
     {
+        foreach(GameObject i in hookList)
+        {
+            i.GetComponent<Hook>().Delete();
+        }
         transform.position = startPosition;//checkpoints.transform.GetChild(checkpoint).position;
 
         // reset everything
@@ -632,10 +641,11 @@ public class PlayerController : MonoBehaviour
 
     public void DeleteThis(HingeJoint2D temp)
     {
-        foreach (HingeJoint2D i in GetComponents<HingeJoint2D>())
-        {
+        foreach (HingeJoint2D i in this.gameObject.GetComponents<HingeJoint2D>())
+        { 
             if (i == temp)
             {
+                Debug.Log("Deleting HJ on player");
                 Destroy(i);
             }
         }

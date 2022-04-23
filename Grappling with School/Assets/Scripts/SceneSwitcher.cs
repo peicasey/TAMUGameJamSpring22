@@ -16,7 +16,7 @@ public class SceneSwitcher : MonoBehaviour
     }
 
     public void GotoTutorial() {
-        SceneManager.LoadScene("Lvl 1"); // might want to rename
+        SceneManager.LoadScene("Tutorial"); // might want to rename
     }
 
     public void GoToLevelSelect() {
