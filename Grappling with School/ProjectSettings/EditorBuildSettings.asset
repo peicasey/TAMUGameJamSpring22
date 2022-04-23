@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuScreen.unity
     guid: 7b7a71d14858d3f4092344137afc4eb1
   - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 3a8e173098494414b99deaa2cf99dcca
+  - enabled: 1
+    path: Assets/Scenes/Peter's Land.unity
+    guid: cac7e9dcec73ef143b038af454c5f4f2
+  - enabled: 1
     path: Assets/Scenes/CreditsScreen.unity
     guid: 72eee990f8d82244c891aecca4d88edf
-  - enabled: 1
-    path: Assets/Scenes/Lvl 1.unity
-    guid: 64c473056f7128341ab9deeb193cab0e
-  - enabled: 1
-    path: Assets/Scenes/Level (Old).unity
-    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

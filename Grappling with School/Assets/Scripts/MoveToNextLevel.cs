@@ -6,16 +6,20 @@ using UnityEngine.SceneManagement;
 public class MoveToNextLevel : MonoBehaviour
 {
     public int nextSceneLoad;
+    SpriteRenderer spDoor;
+    private bool Open;
 
     // Start is called before the first frame update
     void Start()
     {
         nextSceneLoad = SceneManager.GetActiveScene().buildIndex + 1;
+        spDoor = GetComponent<SpriteRenderer>();
+        Open = false;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "Player" && Open)
         {
             if(SceneManager.GetActiveScene().buildIndex == 7)
             {
@@ -33,5 +37,11 @@ public class MoveToNextLevel : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void OpenDoor()
+    {
+        Open = true;
+        spDoor.color = Color.green;
     }
 }
