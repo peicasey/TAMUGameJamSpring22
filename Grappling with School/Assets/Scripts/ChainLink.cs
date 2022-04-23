@@ -18,7 +18,7 @@ public class ChainLink : MonoBehaviour
         height = cd.bounds.size.x;
         width = cd.bounds.size.y;
     }
-
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -32,5 +32,5 @@ public class ChainLink : MonoBehaviour
         //Debug.Log("Exiting");
         cd.isTrigger = false;
     }
-
+    */
 }
