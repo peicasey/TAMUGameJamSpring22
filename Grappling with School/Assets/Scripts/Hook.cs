@@ -30,6 +30,8 @@ public class Hook : MonoBehaviour
     private Transform firePoint;
     private Shoot st;
 
+    public AudioSource audioPlayer;
+
     private void Start()
     {
         p1 = GameObject.FindGameObjectWithTag("Player");
@@ -159,6 +161,8 @@ public class Hook : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Breakable"))
             {
+                audioPlayer.Play();
+
                 p1.GetComponent<PlayerController>().AddHook(this.gameObject);
                 //ConnectRope();
                 shootDir = Vector3.zero;
@@ -171,6 +175,8 @@ public class Hook : MonoBehaviour
             }
             else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment") || collision.gameObject.CompareTag("Bomb"))
             {
+                audioPlayer.Play();
+
                 if (collision.gameObject.CompareTag("Bomb"))
                     collision.gameObject.GetComponent<Bomb>().startBlowingUp();
                 targetObj = collision.gameObject;

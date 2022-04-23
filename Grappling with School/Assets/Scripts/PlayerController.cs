@@ -251,8 +251,6 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("InAir", !(NextToWall() || IsGrounded()));
         animator.SetBool("OnWall", NextToWall() && !IsGrounded());
         */
-        if ((movement < 0 && facingRight) || (movement > 0 && !facingRight))
-            playerVisual.Rotate(0f, 180f, 0f);
 
             animator.SetFloat("Hrzntal_Speed", Mathf.Abs(movement));
             /*
@@ -261,7 +259,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("OnWall", NextToWall() && !IsGrounded());
             */
             if ((movement < 0 && facingRight) || (movement > 0 && !facingRight))
-                transform.Rotate(0f, 180f, 0f);
+                playerVisual.Rotate(0f, 180f, 0f);
 
             // Updating facingRight
             if (movement > 0)

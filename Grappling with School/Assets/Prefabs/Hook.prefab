@@ -93,6 +93,7 @@ MonoBehaviour:
   RetractToLength: 3
   maxTravelDistance: 10
   currentPos: {x: 0, y: 0, z: 0}
+  audioPlayer: {fileID: 7809119388788122406}
 --- !u!82 &7809119388788122406
 AudioSource:
   m_ObjectHideFlags: 0
