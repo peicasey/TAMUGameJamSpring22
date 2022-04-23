@@ -81,17 +81,14 @@ public class Hook : MonoBehaviour
 
     public void Retract()
     {
-        if (fj.enabled)
-        {
-            currentChain.GetComponent<Chain>().RetractTo(RetractToLength);
-        } else
-        {
-            Delete();
-        }
+        Delete();
     }
 
     public void Delete()
     {
+        if (rbHook.bodyType == RigidbodyType2D.Static)
+            p1.GetComponent<PlayerController>().staticHooksOut -= 1;
+
         Debug.Log("Hook: Deleting hook");
         if (fj.enabled)
         {
@@ -102,7 +99,8 @@ public class Hook : MonoBehaviour
             DisconnectRope();
         }
         beingShot = false;
-        Destroy(currentChain);
+        currentChain.GetComponent<Chain>().Delete();
+        p1.GetComponent<PlayerController>().RemoveHook(this.gameObject);
         Destroy(this.gameObject);
     }
     public void ConnectRope()
@@ -146,6 +144,12 @@ public class Hook : MonoBehaviour
         {
             rbHook.velocity = shootDir * force;
         }
+
+        if (p1.GetComponent<PlayerController>().staticHooksOut == 2)
+        {
+            currentChain.GetComponent<Chain>().ExtendTo(p1.GetComponent<PlayerController>().distBtwnHooks() / 2);
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -153,8 +157,9 @@ public class Hook : MonoBehaviour
 
         if (canHook() && !CheckMaxDist())
         {
-            if (collision.gameObject.CompareTag("Platform"))
+            if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Breakable"))
             {
+                p1.GetComponent<PlayerController>().AddHook(this.gameObject);
                 //ConnectRope();
                 shootDir = Vector3.zero;
                 rbHook.velocity = Vector3.zero;
@@ -163,7 +168,6 @@ public class Hook : MonoBehaviour
                 PullPlayer();
                 beingShot = false;
                 hasHooked = true;
-
             }
             else if (collision.gameObject.CompareTag("Movable") || collision.gameObject.CompareTag("Assignment") || collision.gameObject.CompareTag("Bomb"))
             {
@@ -176,6 +180,7 @@ public class Hook : MonoBehaviour
                 Pull(targetObj);
                 beingShot = false;
                 hasHooked = true;
+                p1.GetComponent<PlayerController>().AddHook(this.gameObject);
             }
         }
     }
@@ -190,8 +195,15 @@ public class Hook : MonoBehaviour
     {
         Debug.Log("Pulling Player is being enabled");
         pulling = true;
+        p1.GetComponent<PlayerController>().staticHooksOut += 1;
         currentChain.GetComponent<Chain>().Build(sprite.color);
-        currentChain.GetComponent<Chain>().RetractTo(RetractToLength);
+        if (p1.GetComponent<PlayerController>().staticHooksOut == 1)
+        {
+            currentChain.GetComponent<Chain>().RetractTo(RetractToLength);
+        } else
+        {
+            currentChain.GetComponent<Chain>().RetractTo(p1.GetComponent<PlayerController>().distBtwnHooks()/2);
+        }
     }
 
     private void Pull(GameObject obj)
@@ -218,8 +230,6 @@ public class Hook : MonoBehaviour
         fj.connectedBody = null;
         fj.enabled = false;
         p1.GetComponent<PlayerController>().DeleteThis(currentChain.GetComponent<Chain>().getHJ(2));
-        currentChain.GetComponent<Chain>().RetractTo(0);
-        Destroy(currentChain.gameObject);
         try
         {
             obj.GetComponent<AssignmentController>().Dropped();

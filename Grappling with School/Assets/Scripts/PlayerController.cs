@@ -127,7 +127,13 @@ public class PlayerController : MonoBehaviour
 
     public bool canMove = true;
 
+    public int staticHooksOut = 0;
+
+    [SerializeField]
+    private List<GameObject> hookList = new List<GameObject>();
+
     #endregion
+
 
     // Start is called before the first frame update
     void Start()
@@ -191,19 +197,19 @@ public class PlayerController : MonoBehaviour
             Die();
         }
 
-        if (checkMovementOn()) { 
-        #region input
+        if (checkMovementOn()) {
+            #region input
 
-        // if we are doing a special ability, we don't want to reset movement just yet
-        if (timeAfterWallJump <= 0)
-        {
-            // When dashing, the ability "fades away" to normal movement.
-            float dashMovement = dashSpeed;
-            if (!facingRight)
-                dashMovement *= -1;
-            movement = /*movementInput*/Input.GetAxis("Horizontal") * speed * (dashTimeLength - timeAfterDash) / dashTimeLength + dashMovement * timeAfterDash / dashTimeLength;
+            // if we are doing a special ability, we don't want to reset movement just yet
+            if (timeAfterWallJump <= 0)
+            {
+                // When dashing, the ability "fades away" to normal movement.
+                float dashMovement = dashSpeed;
+                if (!facingRight)
+                    dashMovement *= -1;
+                movement = /*movementInput*/Input.GetAxis("Horizontal") * speed * (dashTimeLength - timeAfterDash) / dashTimeLength + dashMovement * timeAfterDash / dashTimeLength;
 
-        }
+            }
             if (!jumped && (jumpsLeft != 0 || IsGrounded()))
             {
                 jumped = Input.GetButtonDown("Jump");
@@ -215,56 +221,56 @@ public class PlayerController : MonoBehaviour
             }
 
 
-        /*
-        // This will turn off wall climb if the user is holding down
-        if (Input.GetAxis("Vertical") < 0)
-        {
-            wallClimb = false;
-        }
-        else
-        {
-            wallClimb = true;
-        }
-        */
-
-        // To reset jumpsLeft
-        if (IsGrounded())
-        {
-            jumpsLeft = extraJumps;
-            dashesLeft = numDashes;
-        }
-
-        #endregion
-
-
-        #region animation
-        
-        animator.SetFloat("Hrzntal_Speed", Mathf.Abs(movement));
-        /*
-        animator.SetBool("IsJumping", jumped);
-        animator.SetBool("InAir", !(NextToWall() || IsGrounded()));
-        animator.SetBool("OnWall", NextToWall() && !IsGrounded());
-        */
-        if ((movement < 0 && facingRight) || (movement > 0 && !facingRight))
-            transform.Rotate(0f, 180f, 0f);
-
-        // Updating facingRight
-        if (movement > 0)
-            facingRight = true;
-        if (movement < 0)
-            facingRight = false;
-
-        #endregion
-
-        // I was having a wierd issue where if you hold down move while next to a wall, you don't fall
-        // This seems to fix that
-        if (timeAfterWallJump <= 0)
-        {
-            if (NextToLeftHitbox() && movement < 0 || NextToRightHitbox() && movement > 0)
+            /*
+            // This will turn off wall climb if the user is holding down
+            if (Input.GetAxis("Vertical") < 0)
             {
-                movement = 0;
+                wallClimb = false;
             }
-        }
+            else
+            {
+                wallClimb = true;
+            }
+            */
+
+            // To reset jumpsLeft
+            if (IsGrounded())
+            {
+                jumpsLeft = extraJumps;
+                dashesLeft = numDashes;
+            }
+
+            #endregion
+
+
+            #region animation
+
+            animator.SetFloat("Hrzntal_Speed", Mathf.Abs(movement));
+            /*
+            animator.SetBool("IsJumping", jumped);
+            animator.SetBool("InAir", !(NextToWall() || IsGrounded()));
+            animator.SetBool("OnWall", NextToWall() && !IsGrounded());
+            */
+            if ((movement < 0 && facingRight) || (movement > 0 && !facingRight))
+                transform.Rotate(0f, 180f, 0f);
+
+            // Updating facingRight
+            if (movement > 0)
+                facingRight = true;
+            if (movement < 0)
+                facingRight = false;
+
+            #endregion
+
+            // I was having a wierd issue where if you hold down move while next to a wall, you don't fall
+            // This seems to fix that
+            if (timeAfterWallJump <= 0)
+            {
+                if (NextToLeftHitbox() && movement < 0 || NextToRightHitbox() && movement > 0)
+                {
+                    movement = 0;
+                }
+            }
         }
 
         //For testing purposes
@@ -363,7 +369,7 @@ public class PlayerController : MonoBehaviour
             {
                 // The vertical fall speed we can't go over
                 float speedLimit = -wallSlideSpeed;
-                
+
                 if ((NextToWall() && timeAfterWallJump <= 0) && wallClimb)
                 {
                     // Remember, we are sliding in the negative y direction
@@ -407,7 +413,7 @@ public class PlayerController : MonoBehaviour
     #region dying and respawning
     public void Die()
     {
-        if (lives > 0) { 
+        if (lives > 0) {
             Respawn();
         } else
         {
@@ -579,7 +585,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     */
-    
+
     public bool checkMovementOn()
     {
         //return !(NextToRightHitbox() || NextToLeftHitbox());
@@ -589,7 +595,7 @@ public class PlayerController : MonoBehaviour
     public void Damage(float num = 1)
     {
         health -= num;
-        if(health <= 0)
+        if (health <= 0)
         {
             Die();
         }
@@ -608,7 +614,7 @@ public class PlayerController : MonoBehaviour
     private void healthUIUpdate()
     {
         healthIndicator.text = "GPA: " + health + ".0";
-        lifeIndicator.text= "Q drops: " + lives;
+        lifeIndicator.text = "Q drops: " + lives;
     }
 
     private void GameOver()
@@ -621,11 +627,30 @@ public class PlayerController : MonoBehaviour
     {
         foreach (HingeJoint2D i in GetComponents<HingeJoint2D>())
         {
-            if(i == temp)
+            if (i == temp)
             {
                 Destroy(i);
             }
         }
+    }
+
+    public void AddHook(GameObject hook)
+    {
+        hookList.Add(hook);
+    }
+    public void RemoveHook(GameObject hook)
+    {
+        hookList.Remove(hook);
+    }
+
+    public float distBtwnHooks()
+    {
+        if(hookList.Count == 2)
+        {
+            Debug.Log(Vector3.Distance(hookList[0].GetComponent<Transform>().position, hookList[1].GetComponent<Transform>().position));
+            return Vector3.Distance(hookList[0].GetComponent<Transform>().position, hookList[1].GetComponent<Transform>().position);
+        }
+        return 10;
     }
 
 }

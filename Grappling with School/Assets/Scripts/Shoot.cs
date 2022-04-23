@@ -8,7 +8,7 @@ public class Shoot : MonoBehaviour
 {
     //0 = no shots fired, can shoot out, 1 = shot fired out, not retracted, 2 = shot fired out, retracted
     //0, the gun fires the hook 1, the hook retracts, 2 the hook deletes itself
-    public int canShoot;
+    public bool canShoot;
     [SerializeField] private Transform pfHook;
     private Transform hookTransform;
 
@@ -22,7 +22,7 @@ public class Shoot : MonoBehaviour
 
     void Start()
     {
-        canShoot = 0;
+        canShoot = true;
     }
 
     private void Update()
@@ -93,17 +93,14 @@ public class Shoot : MonoBehaviour
     private void onShoot(/**object sender, CharacterAiming.OnShootEventArgs e**/)
     {
         Debug.Log("OnShoot: canshoot: " + canShoot);
-        if (canShoot == 0)
+        if (canShoot)
         {
             Debug.Log("pewpew");
             ShootHook();
         } else if(!hookTransform)
         {
             ShootHook();
-        } else if (canShoot == 1)
-        {
-            Retract();
-        } else if(canShoot == 2)
+        } else if(!canShoot)
         {
             Delete();
         } else
@@ -120,25 +117,15 @@ public class Shoot : MonoBehaviour
         hookTransform = Instantiate(pfHook, firePoint.position, Quaternion.identity);
         hookTransform.GetComponent<Hook>().Setup(this, shootDir, isArm1, firePoint);
         Targeting(hookTransform.gameObject);
-        canShoot = 1;
+        canShoot = false;
         Debug.Log("ShootHook: canshoot: " + canShoot);
-    }
-
-
-    
-    private void Retract()
-    {
-        Debug.Log("Retract: Retracting hook");
-        hookTransform.GetComponent<Hook>().Retract();
-        canShoot = 2;
-        Debug.Log("Retract: canshoot: " + canShoot);
     }
 
     private void Delete()
     {
         Debug.Log("Delete: DEleting hook");
         hookTransform.GetComponent<Hook>().Delete();
-        canShoot = 0;
+        canShoot = true;
         Debug.Log("Retract: canshoot: " + canShoot);
         Aiming();
     }

@@ -30,6 +30,9 @@ public class Chain : MonoBehaviour
     public Transform anchor;
 
     [SerializeField]
+    public int extraChains = 2;
+
+    [SerializeField]
     private float retractDelay;
 
     ///**Testing val
@@ -37,6 +40,8 @@ public class Chain : MonoBehaviour
     //**/
 
     Color chainColor;
+
+    bool retracting;
 
 
     private void Start()
@@ -46,6 +51,10 @@ public class Chain : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            AddChains(numOfChains + 1);
+        }
     }
 
     public void Build(Color hookColor)
@@ -73,7 +82,7 @@ public class Chain : MonoBehaviour
         length = Vector2.Distance(target1.GetComponent<Transform>().position, target2.GetComponent<Transform>().position);
         //Debug.Log("Length: " + length);
 
-        numOfChains = (int)(length / chainObjectHeight);
+        numOfChains = Mathf.CeilToInt(length / chainObjectHeight) + extraChains;
         Spawn();
         ConnectBtwn();
     }
@@ -92,7 +101,7 @@ public class Chain : MonoBehaviour
             chainLinks[i].name = "Chain " + i;
             //Debug.Log(chainLinks);
             chainLinks[i].GetComponent<Transform>().position = chainLinks[i - 1].GetComponent<ChainLink>().nextPos.transform.position;
-
+            
             //Adding HingeJoint
             HingeJoint2D currentHJ = chainLinks[i].AddComponent<HingeJoint2D>();
             currentHJ.autoConfigureConnectedAnchor = false;
@@ -143,6 +152,10 @@ public class Chain : MonoBehaviour
         fj2.autoConfigureConnectedAnchor = false;
         fj2.connectedAnchor = chainLinks[numOfChains - 1].GetComponent<ChainLink>().top.localPosition;
         **/
+        //Trying to fix janky teleporting
+        target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        Debug.Log(target2.GetComponent<Rigidbody2D>().bodyType);
+
         hj1 = chainLinks[0].AddComponent<HingeJoint2D>();
         hj2 = target2.AddComponent<HingeJoint2D>();
 
@@ -159,12 +172,14 @@ public class Chain : MonoBehaviour
         hj1.anchor = chainLinks[0].GetComponent<ChainLink>().bottom.localPosition;
         hj2.autoConfigureConnectedAnchor = false;
         hj2.connectedAnchor = chainLinks[numOfChains - 1].GetComponent<ChainLink>().top.localPosition;
+
+        
     }
 
 
     public void RetractTo(float targetLength)
     {
-        int targetNumOfChains = Mathf.CeilToInt(targetLength / chainObjectHeight);
+        int targetNumOfChains = Mathf.CeilToInt(targetLength / chainObjectHeight) + extraChains;
         Debug.Log("Retracting to" + targetNumOfChains);
         StartCoroutine(RetractTo(targetNumOfChains));
         numOfChains = chainLinks.Count;
@@ -182,18 +197,25 @@ public class Chain : MonoBehaviour
 
     IEnumerator RetractTo(int targetNum)
     {
+       retracting = true;
         //Debug.Log("Retracting");
         for (int i = numOfChains - 1; numOfChains > targetNum; i--)
         {
+            //Trying to fix janky teleporting
+            target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             Debug.Log(i);
             if (i <= 0)
                 Delete();
             Destroy(chainLinks[i]);
             chainLinks.RemoveAt(i);
             hj2.connectedBody = chainLinks[i - 1].GetComponent<Rigidbody2D>();
+            //Trying to fix janky teleporting
+            chainLinks[i-1].transform.position = target2.GetComponent<Transform>().position;
             numOfChains = chainLinks.Count;
             yield return new WaitForSeconds(retractDelay);
         }
+        //target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        retracting = false;
     }
 
     IEnumerator RetractFrom(int targetNum)
@@ -215,10 +237,53 @@ public class Chain : MonoBehaviour
             numOfChains = chainLinks.Count;
             yield return new WaitForSeconds(retractDelay);
         }
+        //Trying to fix janky teleporting
+        target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    public void ExtendTo(float targetLength)
+    {
+        if(!retracting)
+            AddChains(Mathf.CeilToInt(targetLength / chainObjectHeight) + extraChains);
+    }
+
+    public void AddChains(int targetNum)
+    {
+        for (int i = numOfChains - 1; numOfChains < targetNum; i++)
+        {
+            Debug.Log(i);
+            currentChainLink = Instantiate<GameObject>(chainObject, this.transform);
+            currentChainLink.GetComponent<SpriteRenderer>().color = chainColor;
+            chainLinks.Add(currentChainLink);
+            chainLinks[i].name = "Chain " + i;
+            //Debug.Log(chainLinks);
+            chainLinks[i].GetComponent<Transform>().position = chainLinks[i - 1].GetComponent<ChainLink>().nextPos.transform.position;
+
+            //Adding HingeJoint
+            HingeJoint2D currentHJ = chainLinks[i].AddComponent<HingeJoint2D>();
+            currentHJ.autoConfigureConnectedAnchor = false;
+            currentHJ.connectedBody = chainLinks[i - 1].GetComponent<Rigidbody2D>();
+
+            //Debug.Log("Connected Anchor: " + chainLinks[i].GetComponent<ChainLink>().top.localPosition);
+            //Debug.Log(" Anchor: " + chainLinks[i - 1].GetComponent<ChainLink>().bottom.localPosition);
+
+            currentHJ.connectedAnchor = chainLinks[i].GetComponent<ChainLink>().top.localPosition;
+            currentHJ.anchor = chainLinks[i - 1].GetComponent<ChainLink>().bottom.localPosition;
+
+            //Trying to fix janky spawning bug
+            chainLinks[i].transform.position = chainLinks[i - 1].GetComponent<Transform>().position;
+            chainLinks[i].transform.position = target2.GetComponent<Transform>().position;
+
+            //Trying to fix launching across the map bug
+            chainLinks[i].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            hj2.connectedBody = chainLinks[i].GetComponent<Rigidbody2D>();
+            numOfChains = chainLinks.Count;
+        }
     }
 
     public void Delete()
     {
+        target2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         Destroy(this.gameObject);
     }
 

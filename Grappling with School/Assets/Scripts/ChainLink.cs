@@ -29,7 +29,7 @@ public class ChainLink : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Debug.Log("Exiting");
+        //Debug.Log("Exiting");
         cd.isTrigger = false;
     }
 

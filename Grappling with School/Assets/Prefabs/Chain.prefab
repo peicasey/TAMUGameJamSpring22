@@ -50,5 +50,6 @@ MonoBehaviour:
   chainLinks: []
   numOfChains: 0
   anchor: {fileID: 0}
+  extraChains: 1
   retractDelay: 0.2
   retractToLen: 0
