@@ -30,7 +30,7 @@ public class AssignmentController : MonoBehaviour
     public float minMovingTime;
     public float maxMovingTime;
 
-
+    public AudioSource audioPlayer;
 
     // true if the character is facing right
     private bool facingRight;
@@ -52,10 +52,7 @@ public class AssignmentController : MonoBehaviour
 
     private bool beingPulled = false;
 
-
-    // TEMPORARY - these 2 variables are not intended for final product
-    private SpriteRenderer leftBox;
-    private SpriteRenderer rightBox;
+    
 
     #endregion
 
@@ -68,13 +65,10 @@ public class AssignmentController : MonoBehaviour
         playerVisual = transform.GetChild(0);
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
         facingRight = true;
+        audioPlayer = GameObject.Find("Paper death sound").GetComponent<AudioSource>();
 
         // TODO: Tell GameManager that this assignment exists (to add to the count)
 
-
-        // TEMPORARY
-        leftBox = transform.GetChild(1).GetComponent<SpriteRenderer>();
-        rightBox = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
 
         // PROTIP:
@@ -155,55 +149,6 @@ public class AssignmentController : MonoBehaviour
 
         #endregion
 
-
-        // FOR TESTING PURPOSES
-        // Not intended for final product
-        #region temporary
-
-        // For now, there are 2 boxes on either side of the assignment representing the area it is checking
-        // This code will change the color of those boxes to show us what it detects
-
-        if (IsGrounded())
-        {
-            if (NextToLeftWall())
-            {
-                leftBox.color = new Color(1, 0, 0, 0.4f);
-            }
-            else
-            {
-                if (IsGroundedLeft())
-                {
-                    leftBox.color = new Color(0, 1, 0, 0.4f);
-                }
-                else
-                {
-                    leftBox.color = new Color(1, 1, 0, 0.4f);
-                }
-            }
-
-
-            if (NextToRightWall())
-            {
-                rightBox.color = new Color(1, 0, 0, 0.4f);
-            }
-            else
-            {
-                if (IsGroundedRight())
-                {
-                    rightBox.color = new Color(0, 1, 0, 0.4f);
-                }
-                else
-                {
-                    rightBox.color = new Color(1, 1, 0, 0.4f);
-                }
-            }
-        }
-        else
-        {
-            leftBox.color = new Color(0, 0, 0, 0.4f);
-            rightBox.color = new Color(0, 0, 0, 0.4f);
-        }
-        #endregion
 
     }
 
@@ -354,6 +299,7 @@ public class AssignmentController : MonoBehaviour
     private void Die()
     {
         // TODO: tell GameManager that assignment died
+        audioPlayer.Play();
         Destroy(this.gameObject);
     }
 

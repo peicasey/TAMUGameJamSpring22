@@ -20,6 +20,8 @@ public class Shoot : MonoBehaviour
 
     private GameObject target;
 
+    public AudioSource audioPlayer;
+
     void Start()
     {
         canShoot = 0;
@@ -122,6 +124,8 @@ public class Shoot : MonoBehaviour
         Targeting(hookTransform.gameObject);
         canShoot = 1;
         Debug.Log("ShootHook: canshoot: " + canShoot);
+
+        audioPlayer.Play();
     }
 
 
