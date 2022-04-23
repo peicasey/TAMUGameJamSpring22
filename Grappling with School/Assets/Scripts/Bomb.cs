@@ -73,6 +73,11 @@ public class Bomb : MonoBehaviour
             {
                 hitCollider.gameObject.GetComponent<Hook>().Delete();
             }
+            else if (hitCollider.gameObject.CompareTag("Assignment"))
+            {
+                if(hitCollider.gameObject.GetComponent<AssignmentController>())
+                    hitCollider.gameObject.GetComponent<AssignmentController>().Die();
+            }
             else if (destroyable.Contains(hitCollider.gameObject.tag))
             {
                 Destroy(hitCollider.gameObject);

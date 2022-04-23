@@ -296,7 +296,7 @@ public class AssignmentController : MonoBehaviour
         beingPulled = false;
     }
 
-    private void Die()
+    public void Die()
     {
         // TODO: tell GameManager that assignment died
         audioPlayer.Play();

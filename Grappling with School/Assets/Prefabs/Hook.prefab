@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6147023234665165977}
   - component: {fileID: 5060712820615383176}
   - component: {fileID: 7809119388788122406}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hook
   m_TagString: Hook
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8077394475717886349}
   - component: {fileID: 8077394475717886348}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
