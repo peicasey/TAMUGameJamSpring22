@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5716833444285762588}
   - component: {fileID: 5716833444285762589}
   - component: {fileID: 5716833444285762590}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Box
   m_TagString: Movable
   m_Icon: {fileID: 0}
@@ -129,5 +129,5 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0

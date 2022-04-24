@@ -435,14 +435,22 @@ public class PlayerController : MonoBehaviour
 
     public void Respawn()
     {
-        foreach(GameObject i in hookList)
+        try
         {
-            try {
-                i.GetComponent<Hook>().Delete();
-            } catch
+            foreach (GameObject i in hookList)
             {
-
+                try
+                {
+                    i.GetComponent<Hook>().Delete();
+                }
+                catch
+                {
+                    Debug.Log("Something went wrong with deleting the hooks individually");
+                }
             }
+        } catch
+        {
+            Debug.Log("Something went wrong with going through the hooks");
         }
         transform.position = startPosition;//checkpoints.transform.GetChild(checkpoint).position;
 
@@ -568,7 +576,7 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Obstacle"))
         {
             Debug.Log("You died!");
-            Die();
+            Damage(100);
         }
 
         if (collision.CompareTag("Assignment"))
