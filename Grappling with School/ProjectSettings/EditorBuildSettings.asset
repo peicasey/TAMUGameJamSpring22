@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: 3a8e173098494414b99deaa2cf99dcca
   - enabled: 1
+    path: Assets/Scenes/Moving Stuff Level.unity
+    guid: 3d1878608fa3db24b9987b892d3129a1
+  - enabled: 1
     path: Assets/Scenes/Peter's Land.unity
     guid: cac7e9dcec73ef143b038af454c5f4f2
   - enabled: 1

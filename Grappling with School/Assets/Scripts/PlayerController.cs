@@ -435,9 +435,22 @@ public class PlayerController : MonoBehaviour
 
     public void Respawn()
     {
-        foreach(GameObject i in hookList)
+        try
         {
-            i.GetComponent<Hook>().Delete();
+            foreach (GameObject i in hookList)
+            {
+                try
+                {
+                    i.GetComponent<Hook>().Delete();
+                }
+                catch
+                {
+                    Debug.Log("Something went wrong with deleting the hooks individually");
+                }
+            }
+        } catch
+        {
+            Debug.Log("Something went wrong with going through the hooks");
         }
         transform.position = startPosition;//checkpoints.transform.GetChild(checkpoint).position;
 
@@ -460,7 +473,7 @@ public class PlayerController : MonoBehaviour
         float margin = groundMargin;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
-        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Movable") : false;
 
         return grounded;
     }
@@ -563,7 +576,7 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Obstacle"))
         {
             Debug.Log("You died!");
-            Die();
+            Damage(100);
         }
 
         if (collision.CompareTag("Assignment"))

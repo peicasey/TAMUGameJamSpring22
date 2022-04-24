@@ -181,6 +181,12 @@ public class AssignmentController : MonoBehaviour
         {
             sleepingTime -= Time.deltaTime;
         }
+
+
+        if (this.transform.position.y < -100)
+        {
+            Die();
+        }
     }
 
 
