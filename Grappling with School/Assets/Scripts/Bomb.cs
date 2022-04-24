@@ -15,7 +15,7 @@ public class Bomb : MonoBehaviour
     SpriteRenderer sp;
     CircleCollider2D cd;
 
-    public List<string> destroyable = new List<string> { "Player", "Assignment", "Breakable", "Hook" };
+    public List<string> destroyable = new List<string> { "Player", "Assignment", "Breakable", "Hook", "Movable" };
     public List<string> triggers = new List<string> { "Player", "Hook" };
 
     public AudioSource audioPlayer;
