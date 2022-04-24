@@ -48,6 +48,8 @@ MonoBehaviour:
   P1pos: {fileID: 0}
   audioManager: {fileID: 0}
   GameOverScreen: {fileID: 0}
+  moveToNextLevel: {fileID: 0}
+  audioPlayer: {fileID: 6108159629361465403}
 --- !u!82 &6108159629361465403
 AudioSource:
   m_ObjectHideFlags: 0
@@ -57,12 +59,12 @@ AudioSource:
   m_GameObject: {fileID: 2275917014038694589}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 8987070009453637127, guid: 5ed03c578b97a5548922dde8f87a75d3, type: 2}
-  m_audioClip: {fileID: 8300000, guid: e6ddfb6e461ee3741bdc1659f7961361, type: 3}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: -8372163466801012753, guid: 5ed03c578b97a5548922dde8f87a75d3, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 7e596ed51bac9834e94cba2ab6206fd2, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

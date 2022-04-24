@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     public MoveToNextLevel moveToNextLevel;
 
+    public AudioSource audioPlayer;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -82,6 +84,7 @@ public class GameManager : MonoBehaviour
         if (assignments == 0)
         {
             moveToNextLevel.OpenDoor();
+            audioPlayer.Play();
         }
     }
 }
