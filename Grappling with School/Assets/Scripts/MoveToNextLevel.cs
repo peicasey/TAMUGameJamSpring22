@@ -42,6 +42,7 @@ public class MoveToNextLevel : MonoBehaviour
     public void OpenDoor()
     {
         Open = true;
-        spDoor.color = Color.green;
+        Animator doorAnimator = spDoor.GetComponent<Animator>();
+        doorAnimator.SetBool("doorOpening", true);
     }
 }
