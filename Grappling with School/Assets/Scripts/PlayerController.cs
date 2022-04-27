@@ -474,7 +474,13 @@ public class PlayerController : MonoBehaviour
         float margin = groundMargin;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
-        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Movable") : false;
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+
+        if (!grounded)
+        {
+            raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin);
+            grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Movable") : false;
+        }
 
         return grounded;
     }
