@@ -69,6 +69,8 @@ public class AssignmentController : MonoBehaviour
         collider = GetComponent<Collider2D>();
         playerVisual = transform.GetChild(0);
         spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
+        attackAnimator = playerVisual.GetComponent<Animator>();
+
         facingRight = true;
         audioPlayer = GameObject.Find("Paper death sound").GetComponent<AudioSource>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -154,6 +156,14 @@ public class AssignmentController : MonoBehaviour
         #region animation
         mainAnimator.SetFloat("hrzntalSpeed", Mathf.Abs(movement));
 
+        if (Mathf.Abs(movement) < 0.0000001) {
+            attackAnimator.SetBool("isAttacking", false);
+        }
+        else if ((movement < 0 && facingRight) || (movement > 0 && !facingRight)) {
+            playerVisual.Rotate(0f, 180f, 0f);
+            attackAnimator.SetBool("isAttacking", true);
+        }
+
         #endregion
 
 
@@ -188,6 +198,11 @@ public class AssignmentController : MonoBehaviour
             Die();
         }
     }
+
+    // public void Attack() {
+    //     Debug.Log("Assignment is attacking");
+    //     attackAnimator.SetBool("isAttacking", true);
+    // }
 
 
     #region wall checks

@@ -139,6 +139,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<Collider2D>();
         playerVisual = transform.GetChild(0);
         facingRight = true;
@@ -582,6 +583,17 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Assignment"))
         {
             Debug.Log("Touched an assignment");
+            // Animator assignmentAnimator1 = collision.GetComponent(typeof(Animator)) as Animator;
+            // Animator assignmentAnimator = collision.gameObject.GetComponentInChildren(typeof(Animator)) as Animator;
+            // assignmentAnimator.SetBool("isAttacking", true);
+            // if(collision.gameObject.GetComponent<AssignmentController>()){
+            //     Debug.Log("here");
+            //     //collision.gameObject.transform.GetChild(0).GetComponent<Animator>().SetBool("isAttacking", true);
+            //     //Debug.Log(collision.gameObject.transform.GetChild(0).name);
+            //     collision.gameObject.GetComponent<AssignmentController>().Attack();
+            //     ///collision.gameObject.transform.GetChild(0).GetComponent<AssignmentController>().Attack();
+            //     //checkpoint.GetChild(0).GetComponent<Animator>().SetBool("open", false);
+            // }
             Damage();
         }
         /*
@@ -628,6 +640,14 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
+        StartCoroutine(ShowDamage());
+    }
+
+    IEnumerator ShowDamage()
+    {
+        spriteRenderer.color = Color.red; // can't do currently because of body part system; ignore warnings
+        yield return new WaitForSeconds(1);
+        spriteRenderer.color = Color.white; 
     }
 
     public void Heal(float num = 1)
