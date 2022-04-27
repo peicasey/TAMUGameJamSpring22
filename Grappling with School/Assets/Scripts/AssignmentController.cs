@@ -57,7 +57,7 @@ public class AssignmentController : MonoBehaviour
 
     public GameManager gm;
 
-    
+    private bool dead;
 
     #endregion
 
@@ -212,7 +212,7 @@ public class AssignmentController : MonoBehaviour
         float margin = 0.05f;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
-        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return grounded;
     }
@@ -223,7 +223,7 @@ public class AssignmentController : MonoBehaviour
         float margin = 0.05f;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.left, margin, platformLayerMask);
-        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return wall;
     }
@@ -234,7 +234,7 @@ public class AssignmentController : MonoBehaviour
         float margin = 0.05f;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.right, margin, platformLayerMask);
-        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return wall;
     }
@@ -245,7 +245,7 @@ public class AssignmentController : MonoBehaviour
         float margin = 0.05f;
         Vector2 point = collider.bounds.center - new Vector3(collider.bounds.size.x, 0, 0);
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
-        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return grounded;
     }
@@ -256,7 +256,7 @@ public class AssignmentController : MonoBehaviour
         float margin = 0.05f;
         Vector2 point = collider.bounds.center + new Vector3(collider.bounds.size.x, 0, 0);
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
-        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return grounded;
     }
@@ -326,6 +326,15 @@ public class AssignmentController : MonoBehaviour
 
     public void Die()
     {
+        if (dead)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        // I had a bug where it died twice for some reason
+        dead = true;
+        Debug.Log("Assignment died");
+
         // tell GameManager that assignment died
         gm.RemoveAssignment();
         audioPlayer.Play();
@@ -337,7 +346,6 @@ public class AssignmentController : MonoBehaviour
     {
         if (collision.CompareTag("Obstacle"))
         {
-            Debug.Log("Assignment died");
             Die();
         }
     }

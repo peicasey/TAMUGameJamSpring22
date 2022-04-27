@@ -164,7 +164,7 @@ public class Hook : MonoBehaviour
 
         if (canHook() && !CheckMaxDist())
         {
-            if (collision.gameObject.CompareTag("Platform"))
+            if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Breakable"))
             {
                 audioPlayer.Play();
 

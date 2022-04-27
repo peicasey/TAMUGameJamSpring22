@@ -1181,7 +1181,7 @@ RectTransform:
   m_AnchorMin: {x: 0.05817188, y: 0.929}
   m_AnchorMax: {x: 0.16260938, y: 0.9760001}
   m_AnchoredPosition: {x: -2, y: -1}
-  m_SizeDelta: {x: 2.5273132, y: -1.0421143}
+  m_SizeDelta: {x: 82.9455, y: -1.0421}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7876188690223127436
 CanvasRenderer:
@@ -1855,7 +1855,7 @@ MeshRenderer:
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
-  m_RendererPriority: 0
+  m_RendererPriority: 1
   m_Materials:
   - {fileID: -1730229545281693634, guid: 07fdb1469620bc14f8f0aa2a5faa4dba, type: 2}
   m_StaticBatchInfo:

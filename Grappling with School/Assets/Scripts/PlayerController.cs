@@ -474,7 +474,7 @@ public class PlayerController : MonoBehaviour
         float margin = groundMargin;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, collider.bounds.size, 0f, Vector2.down, margin, platformLayerMask);
-        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool grounded = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         if (!grounded)
         {
@@ -495,7 +495,7 @@ public class PlayerController : MonoBehaviour
         box.x = box.x * 0.5f;  // I did this beause i was having an issue with the launching platform where you wouild sometimes get wedged between the wall and the platform momentarily, so this makes it so you don't die then
                                // Also this makes sense becasue if you are just on the egde you should be pushed out rather than killed
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, box, 0f, Vector2.up, margin, platformLayerMask);
-        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         if (raycastHit2D.collider)
             return raycastHit2D.collider.CompareTag("Platform") ? raycastHit2D.collider.gameObject : null;
@@ -529,7 +529,7 @@ public class PlayerController : MonoBehaviour
         float margin = wallClimbMargin;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, BoxSizeVerticalSmaller(), 0f, Vector2.left, margin, platformLayerMask);
-        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return wall;
     }
@@ -540,7 +540,7 @@ public class PlayerController : MonoBehaviour
         float margin = wallClimbMargin;
         Vector2 point = collider.bounds.center;
         RaycastHit2D raycastHit2D = Physics2D.BoxCast(point, BoxSizeVerticalSmaller(), 0f, Vector2.right, margin, platformLayerMask);
-        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") : false;
+        bool wall = raycastHit2D.collider ? raycastHit2D.collider.CompareTag("Platform") || raycastHit2D.collider.CompareTag("Breakable") : false;
 
         return wall;
     }
