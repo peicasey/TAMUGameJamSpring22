@@ -20,4 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CreditsScreen.unity
     guid: 72eee990f8d82244c891aecca4d88edf
+  - enabled: 1
+    path: Assets/Scenes/HowToScreen.unity
+    guid: e9fa417bb95f4e44f904a8c11a41a311
+  - enabled: 1
+    path: Assets/Scenes/GameOverScreen.unity
+    guid: 425b2986453da2c4dad8207e8cdd521d
+  - enabled: 1
+    path: Assets/Scenes/LevelSelectScreen.unity
+    guid: 5d2a0efee8230a04381428fb0e3086c7
   m_configObjects: {}
