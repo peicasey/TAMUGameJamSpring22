@@ -45,13 +45,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
+        if (!GameOverScreen)
+        {
+            GameOverScreen = GameObject.Find("GameOverScreen");
+        }
     }
 
     public void GameOver()
     {
         Debug.Log("Game Over");
-        GameOverScreen.SetActive(true);
+        Instantiate<GameObject>(GameOverScreen);
     }
 
     public void RetryLevel()
