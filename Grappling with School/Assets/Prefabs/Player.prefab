@@ -1784,8 +1784,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7f22b619b0b6054438f5f00a5906030d, type: 3}
   - {fileID: 21300000, guid: 25878143d345fc0479f8f2df882ea0d9, type: 3}
   - {fileID: 21300000, guid: e319203e96c1d514d861756cf0326b83, type: 3}
+  - {fileID: 21300000, guid: e319203e96c1d514d861756cf0326b83, type: 3}
   - {fileID: 21300000, guid: 57b4b08ef384b844489818e11f64d2da, type: 3}
   - {fileID: 21300000, guid: 48f813badab9267418e492f8807163e7, type: 3}
+  - {fileID: 21300000, guid: 48f813badab9267418e492f8807163e7, type: 3}
+  - {fileID: 21300000, guid: 253e231d0e3da6645a55be6c6fd75068, type: 3}
   - {fileID: 21300000, guid: 253e231d0e3da6645a55be6c6fd75068, type: 3}
   - {fileID: 21300000, guid: 451c00f3fefd42d4d9f750433af5a1d7, type: 3}
   - {fileID: 21300000, guid: d58534320e495894e9d92988574a0ab9, type: 3}
@@ -1798,7 +1801,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
   - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
   - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
-  spritePerFrame: 10
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  - {fileID: 21300000, guid: ec214af223e199d4791b4da54f45033a, type: 3}
+  spritePerFrame: 6
   loop: 1
   destroyOnEnd: 0
 --- !u!1 &9206905967184025468

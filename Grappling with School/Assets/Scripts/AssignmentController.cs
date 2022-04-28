@@ -36,7 +36,7 @@ public class AssignmentController : MonoBehaviour
     private bool facingRight;
 
     // We use this for flipping only the graphics of our charater without changing our hitbox or anything else
-    private Transform playerVisual;
+    private Transform assignmentVisual;
 
     private SpriteRenderer spriteRenderer;
     new private Collider2D collider;
@@ -51,7 +51,7 @@ public class AssignmentController : MonoBehaviour
     LayerMask platformLayerMask;
 
     public Animator mainAnimator;
-    public Animator attackAnimator;
+    private Animator attackAnimator;
 
     private bool beingPulled = false;
 
@@ -67,9 +67,9 @@ public class AssignmentController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
-        playerVisual = transform.GetChild(0);
-        spriteRenderer = playerVisual.GetComponent<SpriteRenderer>();
-        attackAnimator = playerVisual.GetComponent<Animator>();
+        assignmentVisual = transform.GetChild(0);
+        spriteRenderer = assignmentVisual.GetComponent<SpriteRenderer>();
+        attackAnimator = assignmentVisual.GetComponent<Animator>();
 
         facingRight = true;
         audioPlayer = GameObject.Find("Paper death sound").GetComponent<AudioSource>();
@@ -160,7 +160,7 @@ public class AssignmentController : MonoBehaviour
             attackAnimator.SetBool("isAttacking", false);
         }
         else if ((movement < 0 && facingRight) || (movement > 0 && !facingRight)) {
-            playerVisual.Rotate(0f, 180f, 0f);
+            assignmentVisual.Rotate(0f, 180f, 0f);
             attackAnimator.SetBool("isAttacking", true);
         }
 

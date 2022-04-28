@@ -646,15 +646,15 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
-        StartCoroutine(ShowDamage());
+        //StartCoroutine(ShowDamage());
     }
 
-    IEnumerator ShowDamage()
-    {
-        spriteRenderer.color = Color.red; // can't do currently because of body part system; ignore warnings
-        yield return new WaitForSeconds(1);
-        spriteRenderer.color = Color.white; 
-    }
+    // IEnumerator ShowDamage()
+    // {
+    //     spriteRenderer.color = Color.red; // can't do currently because of body part system; ignore warnings
+    //     yield return new WaitForSeconds(1);
+    //     spriteRenderer.color = Color.white; 
+    // }
 
     public void Heal(float num = 1)
     {
