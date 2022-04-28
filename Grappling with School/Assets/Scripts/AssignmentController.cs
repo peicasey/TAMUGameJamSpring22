@@ -156,13 +156,13 @@ public class AssignmentController : MonoBehaviour
         #region animation
         mainAnimator.SetFloat("hrzntalSpeed", Mathf.Abs(movement));
 
-        if (Mathf.Abs(movement) < 0.0000001) {
-            attackAnimator.SetBool("isAttacking", false);
-        }
-        else if ((movement < 0 && facingRight) || (movement > 0 && !facingRight)) {
-            assignmentVisual.Rotate(0f, 180f, 0f);
-            attackAnimator.SetBool("isAttacking", true);
-        }
+        // if (Mathf.Abs(movement) < 0.0000001) {
+        //     attackAnimator.SetBool("isAttacking", false);
+        // }
+        // else if ((movement < 0 && facingRight) || (movement > 0 && !facingRight)) {
+        //     assignmentVisual.Rotate(0f, 180f, 0f);
+        //     attackAnimator.SetBool("isAttacking", true);
+        // }
 
         #endregion
 
