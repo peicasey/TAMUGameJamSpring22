@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
     public void GiveUp()
     {
         Debug.Log("Go to level select screen -- doesn't exist yet");
-        SceneManager.LoadScene("LevelSelectScreen");
+        SceneManager.LoadScene("GameOverScreen");
     }
 
 
